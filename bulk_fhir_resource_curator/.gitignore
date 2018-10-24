@@ -1,4 +1,29 @@
-build
-out
+<<<<<<< HEAD
+/build/
+/out/
+!gradle/wrapper/gradle-wrapper.jar
 .gradle
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
 .idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+>>>>>>> Adding empty spring boot console app project for console running
