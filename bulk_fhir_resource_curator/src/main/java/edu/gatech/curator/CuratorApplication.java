@@ -7,14 +7,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BulkFhirResourceCuratorApplication implements CommandLineRunner {
+public class CuratorApplication implements CommandLineRunner {
 
 	private static Logger LOG = LoggerFactory
-			.getLogger(BulkFhirResourceCuratorApplication.class);
+			.getLogger(CuratorApplication.class);
 
 	public static void main(String[] args) {
         LOG.info("STARTING THE APPLICATION");
-		SpringApplication.run(BulkFhirResourceCuratorApplication.class, args);
+		SpringApplication.run(CuratorApplication.class, args);
         LOG.info("APPLICATION FINISHED");
 	}
 
