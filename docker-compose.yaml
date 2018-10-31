@@ -3,6 +3,5 @@ services:
   jwks-server:
     image: jwks-server:1.0  
     restart: always
-    #bind host port 8180 to container port 8080
     ports:
-      - 5000:5000
+      - 5000:80
