@@ -23,7 +23,7 @@ pipeline{
         stage('Notify') {
             steps {
                 script{
-                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/jwks-server:latest', ports: '8080:80', service: 'fbo/jwks-server', timeout: 50
+                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/jwks-server:latest', ports: '', service: 'fbo/jwks-server', timeout: 50
                 }
             }
         }
