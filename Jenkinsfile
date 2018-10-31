@@ -11,7 +11,7 @@ pipeline{
                 //element. The script below registers the HDAP Docker registry with the Docker instance used by
                 //the Jenkins Pipeline, builds a Docker image of the project, and pushes it to the registry.
                 script{
-                    docker.withRegistry('https://gt-build.hdap.gatech.edu'){
+                    docker.withRegistry('https://build.hdap.gatech.edu'){
                         //Build and push the database image
                         def jwks_server = docker.build("jwks-server:1.0", "-f ./jwks_server/Dockerfile ./jwks_server")
                         jwks_server.push('latest')
@@ -23,7 +23,7 @@ pipeline{
         stage('Notify') {
             steps {
                 script{
-                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/jwks-server:latest', ports: '', service: 'fbo-3/jwks-server', timeout: 300
+                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/jwks-server:latest', ports: '', service: 'fbo-3/jwks-server', timeout: 50
                 }
             }
         }
