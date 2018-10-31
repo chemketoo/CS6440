@@ -13,7 +13,7 @@ pipeline{
                 script{
                     docker.withRegistry('https://gt-build.hdap.gatech.edu'){
                         //Build and push the database image
-                        def jwks_server = docker.build("jwks_server:1.0", "-f ./jwks_server/Dockerfile ./jwks_server")
+                        def jwks_server = docker.build("jwks-server:1.0", "-f ./jwks_server/Dockerfile ./jwks_server")
                         jwks_server.push('latest')
                     }
                 }
@@ -23,7 +23,7 @@ pipeline{
         stage('Notify') {
             steps {
                 script{
-                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/jwks-server:latest', ports: '8080:80', service: 'FHIR_Buffer_Overflow/jwks_server', timeout: 50
+                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/jwks-server:latest', ports: '8080:80', service: 'FHIR-Buffer-Overflow/jwks-server', timeout: 50
                 }
             }
         }

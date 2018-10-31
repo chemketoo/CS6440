@@ -1,6 +1,6 @@
 version: '3.0'
 services:
-  jwks_server:
+  jwks-server:
     image: jwks-server:1.0  
     restart: always
     #bind host port 8180 to container port 8080
