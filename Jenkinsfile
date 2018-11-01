@@ -4,10 +4,10 @@ pipeline{
 
     stages {
         stage('Build'){
-            //Define the docker image to use for the test stage
-            agent {
-                docker{ image 'openjdk:8-jdk-alpine' }
-            }
+            // //Define the docker image to use for the test stage
+            // agent {
+            //     docker{ image 'openjdk:8-jdk-alpine' }
+            // }
             //Since this is a groovy file we use the '''string''' syntax to define multi-line formatting.
             //Groovy will use the string EXACTLY as written in between the ''' characters. In this instance each
             //line between the ''' characters will be treated as separate lines of a shell script.
@@ -18,7 +18,7 @@ pipeline{
 
         stage('Deploy') {
             steps {
-                sh '''ls -la && ls -la bulk_fhir_server'''
+                sh '''ls -la bulk_fhir_server'''
 
                 //The Jenkins Declarative Pipeline does not provide functionality to deploy to a private
                 //Docker registry. In order to deploy to the HDAP Docker registry we must write a custom Groovy
