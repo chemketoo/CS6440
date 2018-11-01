@@ -1,7 +1,12 @@
 version: '3.0'
 services:
-  jwks-server:
-    image: jwks-server:1.0  
+  bulk-fhir-client:
+    image: bulk-fhir-client:latest
     restart: always
     ports:
       - 5000:80
+  bulk-fhir-server:
+    image: bulk-fhir-server:latest
+    restart: always
+    ports:
+      - 5001:8080

@@ -13,8 +13,11 @@ pipeline{
                 script{
                     docker.withRegistry('https://build.hdap.gatech.edu'){
                         //Build and push the database image
-                        def jwks_server = docker.build("jwks-server:1.0", "-f ./bulk_fhir_client/Dockerfile ./bulk_fhir_client")
-                        jwks_server.push('latest')
+                        def bulk_fhir_client = docker.build("bulk-fhir-client:1.0", "-f ./bulk_fhir_client/Dockerfile ./bulk_fhir_client")
+                        bulk_fhir_client.push('latest')
+
+                        def bulk_fhir_server = docker.build("bulk-fhir-server:1.0", "-f ./bulk_fhir_server/Dockerfile ./bulk_fhir_server")
+                        bulk_fhir_client.push('latest')
                     }
                 }
             }
@@ -23,7 +26,8 @@ pipeline{
         stage('Notify') {
             steps {
                 script{
-                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/jwks-server:latest', ports: '', service: 'fbo-5/jwks-server', timeout: 50
+                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-client:latest', ports: '', service: 'fbo-1/bulk-fhir-client', timeout: 50
+                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-server:latest', ports: '', service: 'fbo-1/bulk-fhir-server', timeout: 50
                 }
             }
         }
