@@ -8,12 +8,11 @@ pipeline{
             agent {
                 docker{ image 'openjdk:8-jdk-alpine' }
             }
-            //Write the scripts to run in the node Docker container to test the Angular application.
             //Since this is a groovy file we use the '''string''' syntax to define multi-line formatting.
             //Groovy will use the string EXACTLY as written in between the ''' characters. In this instance each
             //line between the ''' characters will be treated as separate lines of a shell script.
             steps{
-                sh '''cd ./bulk_fhir_server && ./mvnw package'''
+                sh '''cd ./bulk_fhir_server && ls -la && ./mvnw package'''
             }
         }
 
