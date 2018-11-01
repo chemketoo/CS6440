@@ -11,13 +11,15 @@ pipeline{
             //Since this is a groovy file we use the '''string''' syntax to define multi-line formatting.
             //Groovy will use the string EXACTLY as written in between the ''' characters. In this instance each
             //line between the ''' characters will be treated as separate lines of a shell script.
-            steps{
-                sh '''cd ./bulk_fhir_server && ls -la && ./mvnw package'''
+            steps {
+                sh '''cd ./bulk_fhir_server && ./mvnw package'''
             }
         }
 
         stage('Deploy') {
             steps {
+                sh '''ls -la && ls -la bulk_fhir_server'''
+
                 //The Jenkins Declarative Pipeline does not provide functionality to deploy to a private
                 //Docker registry. In order to deploy to the HDAP Docker registry we must write a custom Groovy
                 //script using the Jenkins Scripting Pipeline. This is done by placing Groovy code with in a "script"
