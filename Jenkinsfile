@@ -18,8 +18,6 @@ pipeline{
 
         stage('Deploy') {
             steps {
-                sh '''ls -la bulk_fhir_server'''
-
                 //The Jenkins Declarative Pipeline does not provide functionality to deploy to a private
                 //Docker registry. In order to deploy to the HDAP Docker registry we must write a custom Groovy
                 //script using the Jenkins Scripting Pipeline. This is done by placing Groovy code with in a "script"
@@ -32,7 +30,7 @@ pipeline{
                         bulk_fhir_client.push('latest')
 
                         def bulk_fhir_server = docker.build("bulk-fhir-server:1.0", "-f ./bulk_fhir_server/Dockerfile ./bulk_fhir_server")
-                        bulk_fhir_client.push('latest')
+                        bulk_fhir_server.push('latest')
                     }
                 }
             }
@@ -42,7 +40,7 @@ pipeline{
             steps {
                 script{
                     rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-client:latest', ports: '', service: 'fbo-1/bulk-fhir-client', timeout: 50
-                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-server:latest', ports: '', service: 'fbo-1/bulk-fhir-server', timeout: 50
+                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-server:latest', ports: '', service: 'fbo-2/bulk-fhir-server', timeout: 50
                 }
             }
         }
