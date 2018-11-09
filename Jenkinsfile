@@ -25,7 +25,9 @@ pipeline{
                 //the Jenkins Pipeline, builds a Docker image of the project, and pushes it to the registry.
                 script{
                     docker.withRegistry('https://build.hdap.gatech.edu'){
-                        //Build and push the database image
+                        def jwks_server = docker.build("jwks-server:1.0", "-f ./jwks_server/Dockerfile ./jwks_server")
+                        jwks_server.push('latest')
+
                         def bulk_fhir_client = docker.build("bulk-fhir-client:1.0", "-f ./bulk_fhir_client/Dockerfile ./bulk_fhir_client")
                         bulk_fhir_client.push('latest')
 
@@ -39,8 +41,35 @@ pipeline{
         stage('Notify') {
             steps {
                 script{
-                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-client:latest', ports: '', service: 'fbo/bulk-fhir-client', timeout: 50
-                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-server:latest', ports: '', service: 'fbo/bulk-fhir-server', timeout: 50
+                    rancher 
+                        confirm: true, 
+                        credentialId: 'rancher-server', 
+                        endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', 
+                        environmentId: '1a7', environments: '', 
+                        image: 'build.hdap.gatech.edu/jwks-server:latest', 
+                        ports: '', 
+                        service: 'fbo/jwks-server', 
+                        timeout: 50
+                    rancher 
+                        confirm: true, 
+                        credentialId: 'rancher-server', 
+                        endpoint: 'https://rancher.hdap.gatech.edu/v2-beta',
+                        environmentId: '1a7', 
+                        environments: '', 
+                        image: 'build.hdap.gatech.edu/bulk-fhir-client:latest', 
+                        ports: '', 
+                        service: 'fbo/bulk-fhir-client', 
+                        timeout: 50
+                    rancher 
+                        confirm: true, 
+                        credentialId: 'rancher-server', 
+                        endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', 
+                        environmentId: '1a7', 
+                        environments: '', 
+                        image: 'build.hdap.gatech.edu/bulk-fhir-server:latest', 
+                        ports: '', 
+                        service: 'fbo/bulk-fhir-server', 
+                        timeout: 50
                 }
             }
         }
