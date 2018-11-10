@@ -13,7 +13,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 public class MetricController {
 
-    @RequestMapping(method=GET, path="/metrics")
+    @RequestMapping(method=GET, path="/api/metrics")
     public ApiResponse metrics(@RequestParam(value="source", defaultValue="census") String source) {
         ArrayList list = new ArrayList();
         list.add(new Metric(source));

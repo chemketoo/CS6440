@@ -24,7 +24,7 @@ public class MetricControllerTest {
 
     @Test
     public void  shouldReturnAListOfMetrics() throws Exception {
-        this.mockMvc.perform(get("/metrics").param("source", "test-source"))
+        this.mockMvc.perform(get("/api/metrics").param("source", "test-source"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").isArray());
     }
