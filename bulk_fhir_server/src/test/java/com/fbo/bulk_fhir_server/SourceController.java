@@ -17,14 +17,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MetricControllerTest {
+public class SourceController {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void  shouldReturnAListOfMetrics() throws Exception {
-        this.mockMvc.perform(get("/api/metrics").param("source", "test-source"))
+        this.mockMvc.perform(get("/api/sources"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").isArray());
     }

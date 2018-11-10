@@ -1,0 +1,30 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "bulk_fhir_server",
+                "projectName": "bulk_fhir_server",
+                "workingDirectory": "/Users/cph1180/workspace/school/Utilizing-FHIR-Bulk-Data-API-for-Real-Time-Public-Health-Needs-Assessments/bulk_fhir_server",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "bulk_fhir_server",
+                "projectName": "bulk_fhir_server",
+                "workingDirectory": "/Users/cph1180/workspace/school/Utilizing-FHIR-Bulk-Data-API-for-Real-Time-Public-Health-Needs-Assessments/bulk_fhir_server",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}
