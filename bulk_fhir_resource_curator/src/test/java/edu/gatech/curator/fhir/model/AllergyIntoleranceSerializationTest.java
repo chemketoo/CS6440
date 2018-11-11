@@ -23,7 +23,7 @@ public class AllergyIntoleranceSerializationTest extends FhirModelSerializationT
 
     @Test
     @Ignore
-    public void objectSerialization() throws IOException {
+    public void pending() throws IOException {
 //        AllergyIntolerance serialized = objectMapper.readValue(JsonFromResource.getBytes(allergyIntolerance), AllergyIntolerance.class);
     }
 }

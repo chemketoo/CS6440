@@ -30,6 +30,17 @@ public class SourceSystem {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdated;
 
+    protected SourceSystem() {}
+
+    public SourceSystem(String location, String clientId, String kid, String jku, Date lastUpdated, String accessToken) {
+        this.location = location;
+        this.clientId = clientId;
+        this.kid = kid;
+        this.jku = jku;
+        this.lastUpdated = lastUpdated;
+        this.accessToken = accessToken;
+    }
+
     public Long getId() {
         return id;
     }

@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.EntityManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,22 +29,21 @@ public class SourceSystemsRepositoryIntegrationTest {
 
     @Test
     public void shouldReturnSourceSystemsOlderThanGivenDate() throws ParseException {
-        Date demarcationDate = new SimpleDateFormat("yyyy-MM-dd").parse("2018-02-01");
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2000-02-01");
+        Date demarcationDate = new SimpleDateFormat("yyyy-MM-dd").parse("2000-01-01");
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("1999-12-31");
 
-        SourceSystem entity = new SourceSystem();
-        entity.setAccessToken("-");
-        entity.setClientId("-");
-        entity.setJku("-");
-        entity.setKid("-");
-        entity.setLastUpdated(date);
-        entity.setLocation("-");
+        SourceSystem entity1 = new SourceSystem("location-1", "clientId", "kid", "jku", date, "access-token");
+        SourceSystem entity2 = new SourceSystem("location-2", "clientId", "kid", "jku", date, "access-token");
+        SourceSystem entity3 = new SourceSystem("location-3", "clientId", "kid", "jku", demarcationDate, "access-token");
 
-        entityManager.persist(entity);
+        entityManager.persist(entity1);
+        entityManager.persist(entity2);
+        entityManager.persist(entity3);
 
         List<SourceSystem> actual = subject.findAllByLastUpdatedBefore(demarcationDate);
 
         assertThat(actual).hasSize(2);
+        assertThat(actual).containsExactlyInAnyOrder(entity1, entity2);
     }
 }
 
