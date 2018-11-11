@@ -14,7 +14,8 @@ import static org.mockito.Mockito.verify;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CuratorApplicationTests {
-	@MockBean
+
+    @MockBean
     CuratorService curatorService;
 
     @Autowired

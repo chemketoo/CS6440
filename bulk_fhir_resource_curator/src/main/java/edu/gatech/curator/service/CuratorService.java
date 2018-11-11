@@ -6,6 +6,7 @@ import edu.gatech.curator.repository.SourceSystemsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -17,9 +18,6 @@ public class CuratorService {
     private SourceSystemService sourceSystemService;
 
     @Autowired
-    private SourceSystemClient sourceSystemClient;
-
-    @Autowired
     private SourceSystemsRepository sourceSystemsRepository;
 
     @Autowired
@@ -29,12 +27,17 @@ public class CuratorService {
         List<SourceSystem> sourceSystems = sourceSystemService.retrieveSourceSystemPastDemarcationDate();
 
         sourceSystems.parallelStream().forEach(ss -> {
-            ss.setAccessToken(sourceSystemClient.getAccessToken(ss));
+            try {
+                ss.setAccessToken(sourceSystemService.getAccessToken(ss));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
             sourceSystemsRepository.save(ss);
 
             try {
-                URL exportStatusUrl = sourceSystemClient.startPatientExportOperation(ss);
-                List<ExportOutput> exportOutputs = sourceSystemClient.getExportOutputs(exportStatusUrl, ss);
+                URL exportStatusUrl = sourceSystemService.startPatientExportOperation(ss);
+                List<ExportOutput> exportOutputs = sourceSystemService.getExportOutputs(exportStatusUrl, ss);
                 resourceProcessor.process(exportOutputs, ss);
             } catch (MalformedURLException e) {
                 e.printStackTrace();

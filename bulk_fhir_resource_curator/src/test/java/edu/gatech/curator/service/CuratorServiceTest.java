@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,9 +27,6 @@ public class CuratorServiceTest {
 
     @MockBean
     private SourceSystemService sourceSystemService;
-
-    @MockBean
-    private SourceSystemClient sourceSystemClient;
 
     @MockBean
     private SourceSystemsRepository sourceSystemRepository;
@@ -49,7 +47,7 @@ public class CuratorServiceTest {
     private List<ExportOutput> exportedResources2;
 
     @Before
-    public void setUp() throws MalformedURLException {
+    public void setUp() throws IOException {
 
         expiredSourceSystem1 = mock(SourceSystem.class);
         expiredSourceSystem2 = mock(SourceSystem.class);
@@ -62,18 +60,18 @@ public class CuratorServiceTest {
 
         accessToken1 = "access_token_1_in_jwt_format";
         accessToken2 = "access_token_2_in_jwt_format";
-        when(sourceSystemClient.getAccessToken(expiredSourceSystem1)).thenReturn(accessToken1);
-        when(sourceSystemClient.getAccessToken(expiredSourceSystem2)).thenReturn(accessToken2);
+        when(sourceSystemService.getAccessToken(expiredSourceSystem1)).thenReturn(accessToken1);
+        when(sourceSystemService.getAccessToken(expiredSourceSystem2)).thenReturn(accessToken2);
 
         sourceSystemExportStatusUrl1 = new URL("http://test1.local");
         sourceSystemExportStatusUrl2 = new URL("http://test2.local");
-        when(sourceSystemClient.startPatientExportOperation(expiredSourceSystem1)).thenReturn(sourceSystemExportStatusUrl1);
-        when(sourceSystemClient.startPatientExportOperation(expiredSourceSystem2)).thenReturn(sourceSystemExportStatusUrl2);
+        when(sourceSystemService.startPatientExportOperation(expiredSourceSystem1)).thenReturn(sourceSystemExportStatusUrl1);
+        when(sourceSystemService.startPatientExportOperation(expiredSourceSystem2)).thenReturn(sourceSystemExportStatusUrl2);
 
         exportedResources1 = mock(List.class);
         exportedResources2 = mock(List.class);
-        when(sourceSystemClient.getExportOutputs(sourceSystemExportStatusUrl1, expiredSourceSystem1)).thenReturn(exportedResources1);
-        when(sourceSystemClient.getExportOutputs(sourceSystemExportStatusUrl2, expiredSourceSystem2)).thenReturn(exportedResources2);
+        when(sourceSystemService.getExportOutputs(sourceSystemExportStatusUrl1, expiredSourceSystem1)).thenReturn(exportedResources1);
+        when(sourceSystemService.getExportOutputs(sourceSystemExportStatusUrl2, expiredSourceSystem2)).thenReturn(exportedResources2);
     }
 
     @Test
@@ -84,11 +82,11 @@ public class CuratorServiceTest {
     }
 
     @Test
-    public void start_retrieveAccessTokensFromExpiredSourceSystems() {
+    public void start_retrieveAccessTokensFromExpiredSourceSystems() throws IOException {
         subject.start();
 
-        verify(sourceSystemClient).getAccessToken(expiredSourceSystem1);
-        verify(sourceSystemClient).getAccessToken(expiredSourceSystem2);
+        verify(sourceSystemService).getAccessToken(expiredSourceSystem1);
+        verify(sourceSystemService).getAccessToken(expiredSourceSystem2);
     }
 
     @Test
@@ -106,16 +104,16 @@ public class CuratorServiceTest {
     public void start_shouldInvokeSourceSystemClient_startPatientExportOperation() throws MalformedURLException {
         subject.start();
 
-        verify(sourceSystemClient).startPatientExportOperation(expiredSourceSystem1);
-        verify(sourceSystemClient).startPatientExportOperation(expiredSourceSystem1);
+        verify(sourceSystemService).startPatientExportOperation(expiredSourceSystem1);
+        verify(sourceSystemService).startPatientExportOperation(expiredSourceSystem1);
     }
 
     @Test
     public void start_shouldPollStatusOfPatientExportOperation_returnsOperationOutputs() throws MalformedURLException {
         subject.start();
 
-        verify(sourceSystemClient).getExportOutputs(sourceSystemExportStatusUrl1, expiredSourceSystem1);
-        verify(sourceSystemClient).getExportOutputs(sourceSystemExportStatusUrl2, expiredSourceSystem2);
+        verify(sourceSystemService).getExportOutputs(sourceSystemExportStatusUrl1, expiredSourceSystem1);
+        verify(sourceSystemService).getExportOutputs(sourceSystemExportStatusUrl2, expiredSourceSystem2);
     }
 
     @Test

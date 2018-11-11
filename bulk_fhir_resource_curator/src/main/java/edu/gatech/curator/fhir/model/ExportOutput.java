@@ -7,6 +7,13 @@ public class ExportOutput {
 
     private String url;
 
+    protected ExportOutput() {}
+
+    public ExportOutput(String type, int count, String url) {
+        this.type = type;
+        this.count = count;
+        this.url = url;
+    }
 
     public String getType() {
         return type;

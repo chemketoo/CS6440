@@ -12,7 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DateProviderTest {
+public class DateProviderTest extends BaseProviderTest {
+
     @Autowired
     DateProvider subject;
 

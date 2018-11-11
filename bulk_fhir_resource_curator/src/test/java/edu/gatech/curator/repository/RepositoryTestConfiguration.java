@@ -1,9 +1,11 @@
 package edu.gatech.curator.repository;
 
+import edu.gatech.curator.factory.RetrofitClientFactory;
+import edu.gatech.curator.provider.ClientAssertionProvider;
 import edu.gatech.curator.provider.DateProvider;
 import edu.gatech.curator.service.CuratorService;
 import edu.gatech.curator.service.FhirResourceProcessorService;
-import edu.gatech.curator.service.SourceSystemClient;
+import edu.gatech.curator.client.SmartReferenceImplApi;
 import edu.gatech.curator.service.SourceSystemService;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -35,12 +37,20 @@ public class RepositoryTestConfiguration {
     }
 
     @Bean
-    SourceSystemClient sourceSystemClient() {
-        return mock(SourceSystemClient.class);
+    SmartReferenceImplApi sourceSystemClient() {
+        return mock(SmartReferenceImplApi.class);
     }
 
     @Bean
     FhirResourceProcessorService fhirResourceProcessorService() {
         return mock(FhirResourceProcessorService.class);
     }
+
+    @Bean
+    ClientAssertionProvider clientAssertionProvider() {
+        return mock(ClientAssertionProvider.class);
+    }
+
+    @Bean
+    RetrofitClientFactory retrofitClientFactory() { return mock(RetrofitClientFactory.class); }
 }
