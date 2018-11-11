@@ -8,7 +8,7 @@ import java.util.Date;
 public class SourceSystem {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "location")
@@ -27,6 +27,7 @@ public class SourceSystem {
     private String accessToken;
 
     @Column(name = "last_updated")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdated;
 
     public Long getId() {

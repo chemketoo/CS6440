@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class CuratorServiceTest {
         expiredSourceSystem1 = mock(SourceSystem.class);
         expiredSourceSystem2 = mock(SourceSystem.class);
 
-        Set<SourceSystem> sourceSystems = new HashSet<SourceSystem>() {{
+        List<SourceSystem> sourceSystems = new ArrayList<SourceSystem>() {{
             add(expiredSourceSystem1);
             add(expiredSourceSystem2);
         }};

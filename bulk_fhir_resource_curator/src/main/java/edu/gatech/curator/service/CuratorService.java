@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class CuratorService {
@@ -27,7 +26,7 @@ public class CuratorService {
     private FhirResourceProcessorService resourceProcessor;
 
     public void start() {
-        Set<SourceSystem> sourceSystems = sourceSystemService.retrieveSourceSystemPastDemarcationDate();
+        List<SourceSystem> sourceSystems = sourceSystemService.retrieveSourceSystemPastDemarcationDate();
 
         sourceSystems.parallelStream().forEach(ss -> {
             ss.setAccessToken(sourceSystemClient.getAccessToken(ss));

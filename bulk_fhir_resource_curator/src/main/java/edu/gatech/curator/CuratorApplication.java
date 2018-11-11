@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class CuratorApplication implements CommandLineRunner {
-
-	@Autowired
-	private CuratorService curatorService;
+public class CuratorApplication {
 
 	private static Logger LOG = LoggerFactory
 			.getLogger(CuratorApplication.class);
@@ -23,8 +21,10 @@ public class CuratorApplication implements CommandLineRunner {
         LOG.info("CURATION PROCESS FINISHED");
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-		curatorService.start();
+	@Bean
+	public CommandLineRunner runner(CuratorService curatorService) {
+		return (args -> {
+			curatorService.start();
+		});
 	}
 }

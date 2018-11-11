@@ -20,6 +20,6 @@ public class DateProviderTest {
     public void providesDateOneWeekAgo() {
         long DAY_IN_MS = 1000 * 60 * 60 * 24;
 
-        assertThat(subject.oneWeekFromNow()).isInSameSecondWindowAs(new Date(System.currentTimeMillis() - (7 * DAY_IN_MS)));
+        assertThat(subject.oneWeekAgo()).isInSameSecondWindowAs(new Date(System.currentTimeMillis() - (7 * DAY_IN_MS)));
     }
 }
