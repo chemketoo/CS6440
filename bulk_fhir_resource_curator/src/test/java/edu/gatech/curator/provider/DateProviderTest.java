@@ -19,8 +19,15 @@ public class DateProviderTest extends BaseProviderTest {
 
     @Test
     public void providesDateOneWeekAgo() {
-        long DAY_IN_MS = 1000 * 60 * 60 * 24;
+        long dayInMs = 1000 * 60 * 60 * 24;
 
-        assertThat(subject.oneWeekAgo()).isInSameSecondWindowAs(new Date(System.currentTimeMillis() - (7 * DAY_IN_MS)));
+        assertThat(subject.oneWeekAgo()).isInSameSecondWindowAs(new Date(System.currentTimeMillis() - (7 * dayInMs)));
+    }
+
+    @Test
+    public void providesDateFifteenMinutesFromNow() {
+        long fifteenMinutesInMs = 1000 * 60 * 15;
+
+        assertThat(subject.fifteenMinutesFromNow()).isInSameSecondWindowAs(new Date(System.currentTimeMillis() + fifteenMinutesInMs));
     }
 }

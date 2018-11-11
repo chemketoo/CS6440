@@ -16,6 +16,8 @@ import retrofit2.Response;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.*;
 
 @Service
@@ -37,7 +39,7 @@ public class SourceSystemService {
         return sourceSystemsRepository.findAllByLastUpdatedBefore(dateProvider.oneWeekAgo());
     }
 
-    public String getAccessToken(SourceSystem sourceSystem) throws IOException {
+    public String getAccessToken(SourceSystem sourceSystem) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
         String clientAssertion = clientAssertionProvider.create(sourceSystem);
         BulkFhirApiClient apiClient = retrofitClientFactory.getAPIClient(sourceSystem);
         Call<AccessTokenResponse> call = apiClient.createAccessToken(
@@ -46,7 +48,8 @@ public class SourceSystemService {
                 "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
                 clientAssertion);
 
-        return call.execute().body().getAccessToken();
+        String accessToken = call.execute().body().getAccessToken();
+        return accessToken;
     }
 
     public URL startPatientExportOperation(SourceSystem sourceSystem) throws MalformedURLException {

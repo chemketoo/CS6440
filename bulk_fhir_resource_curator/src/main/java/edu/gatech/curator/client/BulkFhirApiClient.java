@@ -3,8 +3,12 @@ package edu.gatech.curator.client;
 import edu.gatech.curator.fhir.model.AccessTokenResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 
 public interface BulkFhirApiClient {
+    @FormUrlEncoded
+    @POST("auth/token")
     Call<AccessTokenResponse> createAccessToken(
             @Field("scope") String scope,
             @Field("grant_type") String grantType,

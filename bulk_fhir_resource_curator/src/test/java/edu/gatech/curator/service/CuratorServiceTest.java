@@ -14,6 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -47,7 +49,7 @@ public class CuratorServiceTest {
     private List<ExportOutput> exportedResources2;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 
         expiredSourceSystem1 = mock(SourceSystem.class);
         expiredSourceSystem2 = mock(SourceSystem.class);
@@ -82,7 +84,7 @@ public class CuratorServiceTest {
     }
 
     @Test
-    public void start_retrieveAccessTokensFromExpiredSourceSystems() throws IOException {
+    public void start_retrieveAccessTokensFromExpiredSourceSystems() throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
         subject.start();
 
         verify(sourceSystemService).getAccessToken(expiredSourceSystem1);

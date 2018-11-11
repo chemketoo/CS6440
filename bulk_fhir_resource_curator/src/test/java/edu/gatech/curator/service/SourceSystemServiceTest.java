@@ -1,6 +1,6 @@
 package edu.gatech.curator.service;
 
-import edu.gatech.curator.client.SmartReferenceImplApi;
+import edu.gatech.curator.client.BulkFhirApiClient;
 import edu.gatech.curator.entity.SourceSystem;
 import edu.gatech.curator.factory.RetrofitClientFactory;
 import edu.gatech.curator.fhir.model.AccessTokenResponse;
@@ -10,8 +10,6 @@ import edu.gatech.curator.repository.SourceSystemsRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +19,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,7 +45,7 @@ public class SourceSystemServiceTest {
     private ClientAssertionProvider clientAssertionProvider;
 
     @MockBean
-    private SmartReferenceImplApi smartReferenceImpl;
+    private BulkFhirApiClient bulkFhirApiClient;
 
     @MockBean
     private RetrofitClientFactory retrofitClientFactory;
@@ -68,7 +68,7 @@ public class SourceSystemServiceTest {
         mockClientAssertion = "signed-jwt-to-use-as-client-assertion";
         when(clientAssertionProvider.create(mockSourceSystem)).thenReturn(mockClientAssertion);
 
-        when(retrofitClientFactory.getAPIClient(mockSourceSystem)).thenReturn(smartReferenceImpl);
+        when(retrofitClientFactory.getAPIClient(mockSourceSystem)).thenReturn(bulkFhirApiClient);
     }
 
     @Test
@@ -80,11 +80,11 @@ public class SourceSystemServiceTest {
     }
 
     @Test
-    public void getAccessToken() throws ParseException, IOException {
+    public void getAccessToken() throws ParseException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
         Call mockCall = mock(Call.class);
         when(mockCall.execute()).thenAnswer((Answer<Response<AccessTokenResponse>>) invocation ->
                 Response.success(new AccessTokenResponse("bearer", 900, "expected-access-token")));
-        when(smartReferenceImpl.createAccessToken(
+        when(bulkFhirApiClient.createAccessToken(
                 "system/*.read",
                 "client_credentials",
                 "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",

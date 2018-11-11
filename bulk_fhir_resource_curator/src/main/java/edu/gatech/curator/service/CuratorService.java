@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,16 +32,17 @@ public class CuratorService {
         sourceSystems.parallelStream().forEach(ss -> {
             try {
                 ss.setAccessToken(sourceSystemService.getAccessToken(ss));
-            } catch (IOException e) {
+            } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
                 e.printStackTrace();
                 return;
             }
-            sourceSystemsRepository.save(ss);
 
             try {
                 URL exportStatusUrl = sourceSystemService.startPatientExportOperation(ss);
                 List<ExportOutput> exportOutputs = sourceSystemService.getExportOutputs(exportStatusUrl, ss);
                 resourceProcessor.process(exportOutputs, ss);
+                ss.setLastUpdated(new Date());
+                sourceSystemsRepository.save(ss);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
                 return;
