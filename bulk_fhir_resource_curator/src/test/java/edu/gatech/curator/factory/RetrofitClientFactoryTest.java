@@ -36,7 +36,7 @@ public class RetrofitClientFactoryTest {
     @Before
     public void setUp() throws Exception {
         Date date = new SimpleDateFormat("YYYY-MM-dd").parse("2000-01-01");
-        sourceSystem = new SourceSystem("https://enigmatic-waters-34317.herokuapp.com/auth/token", "random-string", "kid", "adfdsaf", date, "hdafds");
+        sourceSystem = new SourceSystem("https://enigmatic-waters-34317.herokuapp.com", "random-string", "kid", "adfdsaf", date, "hdafds");
     }
 
     @Test

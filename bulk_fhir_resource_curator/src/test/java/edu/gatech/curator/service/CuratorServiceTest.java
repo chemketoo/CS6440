@@ -103,7 +103,7 @@ public class CuratorServiceTest {
     }
 
     @Test
-    public void start_shouldInvokeSourceSystemClient_startPatientExportOperation() throws MalformedURLException {
+    public void start_shouldInvokeSourceSystemClient_startPatientExportOperation() throws IOException {
         subject.start();
 
         verify(sourceSystemService).startPatientExportOperation(expiredSourceSystem1);

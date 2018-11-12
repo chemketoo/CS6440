@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -29,7 +28,7 @@ public class CuratorService {
     public void start() {
         List<SourceSystem> sourceSystems = sourceSystemService.retrieveSourceSystemPastDemarcationDate();
 
-        sourceSystems.parallelStream().forEach(ss -> {
+        sourceSystems.forEach(ss -> {
             try {
                 ss.setAccessToken(sourceSystemService.getAccessToken(ss));
             } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
@@ -43,7 +42,7 @@ public class CuratorService {
                 resourceProcessor.process(exportOutputs, ss);
                 ss.setLastUpdated(new Date());
                 sourceSystemsRepository.save(ss);
-            } catch (MalformedURLException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
                 return;
             }

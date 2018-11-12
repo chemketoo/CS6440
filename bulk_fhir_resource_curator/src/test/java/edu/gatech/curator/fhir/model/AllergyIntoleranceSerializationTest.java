@@ -41,6 +41,6 @@ public class AllergyIntoleranceSerializationTest extends FhirModelSerializationT
         assertThat(serialized.getCode().getCoding().get(0).getDisplay()).isEqualTo("Shellfish allergy");
         assertThat(serialized.getCode().getText()).isEqualTo("Shellfish allergy");
         assertThat(serialized.getPatient().getReference()).isEqualTo("Patient/876e6665-2d8e-432b-9bda-2c9b580c8b18");
-        assertThat(serialized.getAseertedDate()).isEqualToIgnoringMillis(expectedDate);
+        assertThat(serialized.getAssertedDate()).isEqualToIgnoringMillis(expectedDate);
     }
 }

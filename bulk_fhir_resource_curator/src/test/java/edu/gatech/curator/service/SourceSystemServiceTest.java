@@ -4,12 +4,15 @@ import edu.gatech.curator.client.BulkFhirApiClient;
 import edu.gatech.curator.entity.SourceSystem;
 import edu.gatech.curator.factory.RetrofitClientFactory;
 import edu.gatech.curator.fhir.model.AccessTokenResponse;
+import edu.gatech.curator.fhir.model.OperationOutcome;
 import edu.gatech.curator.provider.ClientAssertionProvider;
 import edu.gatech.curator.provider.DateProvider;
+import edu.gatech.curator.provider.OperationOutcomeTextUrlProvider;
 import edu.gatech.curator.repository.SourceSystemsRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +22,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
@@ -50,25 +55,35 @@ public class SourceSystemServiceTest {
     @MockBean
     private RetrofitClientFactory retrofitClientFactory;
 
+    @MockBean
+    private OperationOutcomeTextUrlProvider operationOutcomeTextUrlProvider;
+
     @Autowired
     private SourceSystemService subject;
+
+    @Mock
+    private Call mockCall;
 
     private Date mockedDemarcationDate;
     private SourceSystem mockSourceSystem;
     private String mockClientAssertion;
+    private String accessToken;
 
     @Before
     public void setUp() throws Exception {
+        accessToken = "expected-access-token";
+
         mockedDemarcationDate = mock(Date.class);
         when(mockDateProvider.oneWeekAgo()).thenReturn(mockedDemarcationDate);
 
         Date lastUpdated = new SimpleDateFormat("YYYY-MM-dd").parse("2000-02-02");
-        mockSourceSystem = new SourceSystem("http://i-need-a.token/auth/token", "a-token-of-some-kind", "key-id-of-jwk", "http://where-jwks-is.at", lastUpdated, null);
+        mockSourceSystem = new SourceSystem("http://i-need-a.token/auth/token", "a-token-of-some-kind", "key-id-of-jwk", "http://where-jwks-is.at", lastUpdated, accessToken);
 
         mockClientAssertion = "signed-jwt-to-use-as-client-assertion";
         when(clientAssertionProvider.create(mockSourceSystem)).thenReturn(mockClientAssertion);
 
         when(retrofitClientFactory.getAPIClient(mockSourceSystem)).thenReturn(bulkFhirApiClient);
+
     }
 
     @Test
@@ -80,10 +95,9 @@ public class SourceSystemServiceTest {
     }
 
     @Test
-    public void getAccessToken() throws ParseException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
-        Call mockCall = mock(Call.class);
+    public void getAccessToken() throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
         when(mockCall.execute()).thenAnswer((Answer<Response<AccessTokenResponse>>) invocation ->
-                Response.success(new AccessTokenResponse("bearer", 900, "expected-access-token")));
+                Response.success(new AccessTokenResponse("bearer", 900, accessToken)));
         when(bulkFhirApiClient.createAccessToken(
                 "system/*.read",
                 "client_credentials",
@@ -96,5 +110,31 @@ public class SourceSystemServiceTest {
         verify(retrofitClientFactory).getAPIClient(mockSourceSystem);
 
         assertThat(actual).isEqualTo("expected-access-token");
+    }
+
+    @Test
+    public void startPatientExportOperation() throws IOException {
+        OperationOutcome operationOutcome = mock(OperationOutcome.class);
+        OperationOutcome.Text mockOperationOutcomeText = mock(OperationOutcome.Text.class);
+        when(operationOutcome.getText()).thenReturn(mockOperationOutcomeText);
+        when(mockOperationOutcomeText.getDiv()).thenReturn("div-string");
+
+        URL expectedUrl = new URL("http://test.pass");
+        when(operationOutcomeTextUrlProvider.parse("div-string")).thenReturn(expectedUrl);
+
+        when(mockCall.execute()).thenAnswer((Answer<Response<OperationOutcome>>) invocation -> Response.success(operationOutcome));
+
+        String authorization = "bearer " + accessToken;
+        when(bulkFhirApiClient.startPatientExportOperation(authorization, "application/fhir+ndjson")).thenReturn(mockCall);
+
+        URL actual = subject.startPatientExportOperation(mockSourceSystem);
+
+        verify(retrofitClientFactory).getAPIClient(mockSourceSystem);
+        assertThat(actual).isSameAs(expectedUrl);
+    }
+
+    @Test
+    public void getExportOutputs() throws MalformedURLException {
+        subject.getExportOutputs(new URL("http://example.net"), mockSourceSystem);
     }
 }

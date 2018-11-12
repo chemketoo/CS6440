@@ -2,9 +2,11 @@ package edu.gatech.curator.repository;
 
 import edu.gatech.curator.client.BulkFhirApiClient;
 import edu.gatech.curator.factory.RetrofitClientFactory;
+import edu.gatech.curator.fhir.model.OperationOutcome;
 import edu.gatech.curator.provider.ClientAssertionProvider;
 import edu.gatech.curator.provider.DateProvider;
 import edu.gatech.curator.provider.KeyProvider;
+import edu.gatech.curator.provider.OperationOutcomeTextUrlProvider;
 import edu.gatech.curator.service.CuratorService;
 import edu.gatech.curator.service.FhirResourceProcessorService;
 import edu.gatech.curator.service.SourceSystemService;
@@ -58,5 +60,10 @@ public class RepositoryTestConfiguration {
     @Bean
     KeyProvider keyProvider() {
         return mock(KeyProvider.class);
+    }
+
+    @Bean
+    OperationOutcomeTextUrlProvider operationOutcomeTextUrlProvider() {
+        return mock(OperationOutcomeTextUrlProvider.class);
     }
 }

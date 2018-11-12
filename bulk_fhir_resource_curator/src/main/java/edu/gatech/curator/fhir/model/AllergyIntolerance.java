@@ -1,6 +1,5 @@
 package edu.gatech.curator.fhir.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -18,7 +17,7 @@ public class AllergyIntolerance {
     private String criticality;
     private Code code;
     private Patient patient;
-    private Date aseertedDate;
+    private Date assertedDate;
 
     @JsonProperty("resourceType")
     public String getResourceType() {
@@ -50,14 +49,19 @@ public class AllergyIntolerance {
         return type;
     }
 
-    @JsonProperty("category")
-    public List<String> getCategory() {
-        return category;
-    }
-
     @JsonProperty("criticality")
     public String getCriticality() {
         return criticality;
+    }
+
+    @JsonProperty("assertedDate")
+    public Date getAssertedDate() {
+        return assertedDate;
+    }
+
+    @JsonProperty("category")
+    public List<String> getCategory() {
+        return category;
     }
 
     @JsonProperty("code")
@@ -68,11 +72,6 @@ public class AllergyIntolerance {
     @JsonProperty("patient")
     public Patient getPatient() {
         return patient;
-    }
-
-    @JsonProperty("assertedDate")
-    public Date getAseertedDate() {
-        return aseertedDate;
     }
 
     public static class Meta {

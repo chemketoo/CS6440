@@ -33,7 +33,7 @@ public class ClientAssertionProviderTest extends BaseProviderTest {
     @Before
     public void setUp() throws Exception {
         Date defaultDate = new Date();
-        sourceSystem = new SourceSystem("http://example.net/get/token", "client-id", "keyId", "https://example.net", defaultDate, null);
+        sourceSystem = new SourceSystem("http://example.net", "client-id", "keyId", "https://example.net", defaultDate, null);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class ClientAssertionProviderTest extends BaseProviderTest {
         Key key = keyProvider.getPrivateKey();
         Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jws).getBody();
 
-        assertThat(claims.getAudience()).isEqualTo(sourceSystem.getLocation());
+        assertThat(claims.getAudience()).isEqualTo(sourceSystem.getLocation() + "/auth/token");
     }
 
 }
