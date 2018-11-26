@@ -88,8 +88,7 @@ public class SourceSystemService {
                  return response.body().getOutput();
             }
         }
-
-        return new ArrayList<>();
+        throw new IOException("Received response status from server that was neither ok or accepted.");
     }
 
 }
