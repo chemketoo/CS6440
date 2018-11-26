@@ -1,4 +1,4 @@
-package edu.gatech.curator.fhir.model;
+package edu.gatech.curator.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,4 +1,4 @@
-package edu.gatech.curator.fhir.model;
+package edu.gatech.curator.model;
 
 import edu.gatech.curator.testhelper.JsonFromResource;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AccessTokenResponseTest extends FhirModelSerializationTest {
+public class AccessTokenResponseTest extends ModelSerializationTest {
 
     @Value("classpath:test_fixtures/AccessTokenResponse.json")
     private Resource accessTokenJson;

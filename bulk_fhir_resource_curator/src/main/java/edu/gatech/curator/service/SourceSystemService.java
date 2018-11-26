@@ -3,24 +3,25 @@ package edu.gatech.curator.service;
 import edu.gatech.curator.client.BulkFhirApiClient;
 import edu.gatech.curator.entity.SourceSystem;
 import edu.gatech.curator.factory.RetrofitClientFactory;
-import edu.gatech.curator.fhir.model.AccessTokenResponse;
-import edu.gatech.curator.fhir.model.ExportOutput;
-import edu.gatech.curator.fhir.model.OperationOutcome;
+import edu.gatech.curator.model.AccessTokenResponse;
+import edu.gatech.curator.model.ExportOutputResponse;
+import edu.gatech.curator.model.OperationOutcomeResponse;
 import edu.gatech.curator.provider.ClientAssertionProvider;
 import edu.gatech.curator.provider.DateProvider;
 import edu.gatech.curator.provider.OperationOutcomeTextUrlProvider;
 import edu.gatech.curator.repository.SourceSystemsRepository;
+import okhttp3.HttpUrl;
+import org.hl7.fhir.dstu3.model.AllergyIntolerance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SourceSystemService {
@@ -59,19 +60,36 @@ public class SourceSystemService {
         return body.getAccessToken();
     }
 
-    public URL startPatientExportOperation(SourceSystem sourceSystem) throws IOException {
+    public HttpUrl startPatientExportOperation(SourceSystem sourceSystem) throws IOException {
         BulkFhirApiClient apiClient = retrofitClientFactory.getAPIClient(sourceSystem);
         String authorization = "bearer " + sourceSystem.getAccessToken();
-        Call<OperationOutcome> call = apiClient.startPatientExportOperation(
+        Call<OperationOutcomeResponse> call = apiClient.startPatientExportOperation(
                 authorization,
                 "application/fhir+ndjson");
-        Response<OperationOutcome> response = call.execute();
-        OperationOutcome outcome = response.body();
+        Response<OperationOutcomeResponse> response = call.execute();
+        OperationOutcomeResponse outcome = response.body();
         return operationOutcomeTextUrlProvider.parse(outcome.getText().getDiv());
     }
 
-    public List<ExportOutput> getExportOutputs(URL url, SourceSystem sourceSystem) {
-        return new ArrayList<ExportOutput>();
+    public List<ExportOutputResponse.ExportOutput> getExportOutputs(HttpUrl url, SourceSystem sourceSystem) throws IOException {
+        int responseCode = 202;
+
+        BulkFhirApiClient apiClient = retrofitClientFactory.getAPIClient(sourceSystem);
+        String authorization = "bearer " + sourceSystem.getAccessToken();
+
+        while (responseCode == 202) {
+            Call<ExportOutputResponse> call = apiClient.getExportStatus(
+                    url,
+                    authorization);
+            Response<ExportOutputResponse> response = call.execute();
+            responseCode = response.code();
+
+             if (responseCode == 200) {
+                 return response.body().getOutput();
+            }
+        }
+
+        return new ArrayList<>();
     }
 
 }

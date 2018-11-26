@@ -2,7 +2,6 @@ package edu.gatech.curator.repository;
 
 import edu.gatech.curator.client.BulkFhirApiClient;
 import edu.gatech.curator.factory.RetrofitClientFactory;
-import edu.gatech.curator.fhir.model.OperationOutcome;
 import edu.gatech.curator.provider.ClientAssertionProvider;
 import edu.gatech.curator.provider.DateProvider;
 import edu.gatech.curator.provider.KeyProvider;

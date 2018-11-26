@@ -1,8 +1,9 @@
 package edu.gatech.curator.service;
 
 import edu.gatech.curator.entity.SourceSystem;
-import edu.gatech.curator.fhir.model.ExportOutput;
+import edu.gatech.curator.model.ExportOutputResponse;
 import edu.gatech.curator.repository.SourceSystemsRepository;
+import okhttp3.HttpUrl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,14 +13,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
@@ -43,10 +40,10 @@ public class CuratorServiceTest {
     private SourceSystem expiredSourceSystem2;
     private String accessToken1;
     private String accessToken2;
-    private URL sourceSystemExportStatusUrl1;
-    private URL sourceSystemExportStatusUrl2;
-    private List<ExportOutput> exportedResources1;
-    private List<ExportOutput> exportedResources2;
+    private HttpUrl sourceSystemExportStatusUrl1;
+    private HttpUrl sourceSystemExportStatusUrl2;
+    private List<ExportOutputResponse.ExportOutput> exportedResources1;
+    private List<ExportOutputResponse.ExportOutput> exportedResources2;
 
     @Before
     public void setUp() throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
@@ -65,8 +62,8 @@ public class CuratorServiceTest {
         when(sourceSystemService.getAccessToken(expiredSourceSystem1)).thenReturn(accessToken1);
         when(sourceSystemService.getAccessToken(expiredSourceSystem2)).thenReturn(accessToken2);
 
-        sourceSystemExportStatusUrl1 = new URL("http://test1.local");
-        sourceSystemExportStatusUrl2 = new URL("http://test2.local");
+        sourceSystemExportStatusUrl1 = HttpUrl.parse("http://test1.local");
+        sourceSystemExportStatusUrl2 = HttpUrl.parse("http://test2.local");
         when(sourceSystemService.startPatientExportOperation(expiredSourceSystem1)).thenReturn(sourceSystemExportStatusUrl1);
         when(sourceSystemService.startPatientExportOperation(expiredSourceSystem2)).thenReturn(sourceSystemExportStatusUrl2);
 
@@ -111,7 +108,7 @@ public class CuratorServiceTest {
     }
 
     @Test
-    public void start_shouldPollStatusOfPatientExportOperation_returnsOperationOutputs() throws MalformedURLException {
+    public void start_shouldPollStatusOfPatientExportOperation_returnsOperationOutputs() throws IOException {
         subject.start();
 
         verify(sourceSystemService).getExportOutputs(sourceSystemExportStatusUrl1, expiredSourceSystem1);

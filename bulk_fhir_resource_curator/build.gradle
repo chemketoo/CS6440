@@ -28,6 +28,7 @@ repositories {
 
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter-data-jpa:2.0.6.RELEASE')
+    implementation('ca.uhn.hapi.fhir:hapi-fhir-structures-dstu3:3.6.0')
     implementation('mysql:mysql-connector-java:8.0.13')
     implementation('org.flywaydb:flyway-core:5.2.0')
     implementation('com.fasterxml.jackson.core:jackson-databind:2.9.4')

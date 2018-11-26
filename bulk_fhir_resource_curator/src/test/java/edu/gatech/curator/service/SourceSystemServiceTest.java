@@ -3,12 +3,17 @@ package edu.gatech.curator.service;
 import edu.gatech.curator.client.BulkFhirApiClient;
 import edu.gatech.curator.entity.SourceSystem;
 import edu.gatech.curator.factory.RetrofitClientFactory;
-import edu.gatech.curator.fhir.model.AccessTokenResponse;
-import edu.gatech.curator.fhir.model.OperationOutcome;
+import edu.gatech.curator.model.AccessTokenResponse;
+import edu.gatech.curator.model.ExportOutputResponse;
+import edu.gatech.curator.model.OperationOutcomeResponse;
 import edu.gatech.curator.provider.ClientAssertionProvider;
 import edu.gatech.curator.provider.DateProvider;
 import edu.gatech.curator.provider.OperationOutcomeTextUrlProvider;
 import edu.gatech.curator.repository.SourceSystemsRepository;
+import okhttp3.Headers;
+import okhttp3.HttpUrl;
+import okhttp3.Protocol;
+import okhttp3.Request;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,19 +27,16 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -114,27 +116,46 @@ public class SourceSystemServiceTest {
 
     @Test
     public void startPatientExportOperation() throws IOException {
-        OperationOutcome operationOutcome = mock(OperationOutcome.class);
-        OperationOutcome.Text mockOperationOutcomeText = mock(OperationOutcome.Text.class);
-        when(operationOutcome.getText()).thenReturn(mockOperationOutcomeText);
+        OperationOutcomeResponse operationOutcomeResponse = mock(OperationOutcomeResponse.class);
+        OperationOutcomeResponse.Text mockOperationOutcomeText = mock(OperationOutcomeResponse.Text.class);
+        when(operationOutcomeResponse.getText()).thenReturn(mockOperationOutcomeText);
         when(mockOperationOutcomeText.getDiv()).thenReturn("div-string");
 
-        URL expectedUrl = new URL("http://test.pass");
+        HttpUrl expectedUrl = HttpUrl.parse("http://test.pass");
         when(operationOutcomeTextUrlProvider.parse("div-string")).thenReturn(expectedUrl);
 
-        when(mockCall.execute()).thenAnswer((Answer<Response<OperationOutcome>>) invocation -> Response.success(operationOutcome));
+        when(mockCall.execute()).thenAnswer((Answer<Response<OperationOutcomeResponse>>) invocation -> Response.success(operationOutcomeResponse));
 
         String authorization = "bearer " + accessToken;
         when(bulkFhirApiClient.startPatientExportOperation(authorization, "application/fhir+ndjson")).thenReturn(mockCall);
 
-        URL actual = subject.startPatientExportOperation(mockSourceSystem);
+        HttpUrl actual = subject.startPatientExportOperation(mockSourceSystem);
 
         verify(retrofitClientFactory).getAPIClient(mockSourceSystem);
         assertThat(actual).isSameAs(expectedUrl);
     }
 
     @Test
-    public void getExportOutputs() throws MalformedURLException {
-        subject.getExportOutputs(new URL("http://example.net"), mockSourceSystem);
+    public void getExportOutputs() throws IOException {
+        HttpUrl url = HttpUrl.parse("http://example.net");
+        ExportOutputResponse response = mock(ExportOutputResponse.class);
+        ArrayList<ExportOutputResponse.ExportOutput> expectedList = new ArrayList<>();
+        when(response.getOutput()).thenReturn(expectedList);
+
+        when(bulkFhirApiClient.getExportStatus(url, "bearer " + accessToken)).thenReturn(mockCall);
+
+        okhttp3.Response okHttpResponse = new okhttp3.Response.Builder()
+                .code(202)
+                .protocol(Protocol.HTTP_1_1)
+                .message("Accepted")
+                .request(new Request.Builder().url(url).build())
+                .build();
+        Response acceptedResponse = Response.success(response, okHttpResponse);
+        when(mockCall.execute())
+                .thenAnswer((Answer<Response>) i -> acceptedResponse)
+                .thenAnswer((Answer<Response<ExportOutputResponse>>) i -> Response.success(response));
+
+        assertThat(subject.getExportOutputs(url, mockSourceSystem)).isSameAs(expectedList);
+        verify(mockCall, times(2)).execute();
     }
 }

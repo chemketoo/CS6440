@@ -14,6 +14,7 @@ public class RetrofitClientFactory {
     public BulkFhirApiClient getAPIClient(SourceSystem sourceSystem) throws MalformedURLException {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(sourceSystem.getLocation())
+                .addConverterFactory(new NullOnEmptyConverterFactory())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
         BulkFhirApiClient client = retrofit.create(BulkFhirApiClient.class);

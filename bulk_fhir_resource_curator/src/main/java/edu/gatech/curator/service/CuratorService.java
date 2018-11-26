@@ -1,13 +1,13 @@
 package edu.gatech.curator.service;
 
 import edu.gatech.curator.entity.SourceSystem;
-import edu.gatech.curator.fhir.model.ExportOutput;
+import edu.gatech.curator.model.ExportOutputResponse;
 import edu.gatech.curator.repository.SourceSystemsRepository;
+import okhttp3.HttpUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
@@ -37,8 +37,8 @@ public class CuratorService {
             }
 
             try {
-                URL exportStatusUrl = sourceSystemService.startPatientExportOperation(ss);
-                List<ExportOutput> exportOutputs = sourceSystemService.getExportOutputs(exportStatusUrl, ss);
+                HttpUrl exportStatusUrl = sourceSystemService.startPatientExportOperation(ss);
+                List<ExportOutputResponse.ExportOutput> exportOutputs = sourceSystemService.getExportOutputs(exportStatusUrl, ss);
                 resourceProcessor.process(exportOutputs, ss);
                 ss.setLastUpdated(new Date());
                 sourceSystemsRepository.save(ss);

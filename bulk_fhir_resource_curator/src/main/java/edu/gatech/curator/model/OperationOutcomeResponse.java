@@ -1,10 +1,10 @@
-package edu.gatech.curator.fhir.model;
+package edu.gatech.curator.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class OperationOutcome {
+public class OperationOutcomeResponse {
 
     private String resourceType;
     private Text text;

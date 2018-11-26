@@ -1,5 +1,7 @@
-package edu.gatech.curator.fhir.model;
+package edu.gatech.curator.model;
 
+import edu.gatech.curator.model.ExportOutputResponse;
+import edu.gatech.curator.model.ModelSerializationTest;
 import edu.gatech.curator.testhelper.JsonFromResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,14 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ExportOutputTest extends FhirModelSerializationTest {
+public class ExportOutputTest extends ModelSerializationTest {
 
     @Value("classpath:test_fixtures/ExportOutput.json")
     private Resource exportOutputJson;
 
     @Test
     public void objectSerialization() throws IOException {
-        ExportOutput serialized = objectMapper.readValue(JsonFromResource.getBytes(exportOutputJson), ExportOutput.class);
+        ExportOutputResponse.ExportOutput serialized = objectMapper.readValue(JsonFromResource.getBytes(exportOutputJson), ExportOutputResponse.ExportOutput.class);
 
         assertThat(serialized.getType()).isEqualTo("AllergyIntolerance");
         assertThat(serialized.getCount()).isEqualTo(64);

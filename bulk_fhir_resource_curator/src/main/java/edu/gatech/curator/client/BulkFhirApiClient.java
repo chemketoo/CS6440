@@ -1,7 +1,10 @@
 package edu.gatech.curator.client;
 
-import edu.gatech.curator.fhir.model.AccessTokenResponse;
-import edu.gatech.curator.fhir.model.OperationOutcome;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import edu.gatech.curator.model.AccessTokenResponse;
+import edu.gatech.curator.model.OperationOutcomeResponse;
+import edu.gatech.curator.model.ExportOutputResponse;
+import okhttp3.HttpUrl;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -20,7 +23,12 @@ public interface BulkFhirApiClient {
     })
 
     @GET("fhir/Patient/$export")
-    Call<OperationOutcome> startPatientExportOperation(
+    Call<OperationOutcomeResponse> startPatientExportOperation(
             @Header("Authorization") String authorization,
             @Query("_outputFormat") String exportFormat);
+
+    @GET
+    Call<ExportOutputResponse> getExportStatus(
+            @Url HttpUrl url,
+            @Header("Authorization") String authorization);
 }
