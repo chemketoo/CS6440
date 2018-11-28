@@ -5,11 +5,15 @@ import edu.gatech.curator.entity.SourceSystem;
 import edu.gatech.curator.factory.RetrofitClientFactory;
 import edu.gatech.curator.manager.AllergyIntoleranceDataManager;
 import edu.gatech.curator.manager.CarePlanDataManager;
+import edu.gatech.curator.manager.ObservationDataManager;
+import edu.gatech.curator.manager.PatientDataManager;
 import edu.gatech.curator.model.ExportOutputResponse;
 import edu.gatech.curator.model.NdJson;
 import okhttp3.HttpUrl;
 import org.hl7.fhir.dstu3.model.AllergyIntolerance;
 import org.hl7.fhir.dstu3.model.CarePlan;
+import org.hl7.fhir.dstu3.model.Observation;
+import org.hl7.fhir.dstu3.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
@@ -27,6 +31,12 @@ public class FhirResourceProcessorService {
 
     @Autowired
     private AllergyIntoleranceDataManager allergyIntoleranceDataManager;
+
+    @Autowired
+    private PatientDataManager patientDataManager;
+
+    @Autowired
+    private ObservationDataManager observationDataManager;
 
     @Autowired
     private CarePlanDataManager carePlanDataManager;
@@ -67,10 +77,16 @@ public class FhirResourceProcessorService {
                 case MEDICATION_REQUEST:
                     break;
                 case OBSERVATION:
+                    Call<NdJson<Observation>> obseravationCall= apiClient.getObseravationResources(url, authorization);
+                    Response<NdJson<Observation>> observationResponse = obseravationCall.execute();
+                    observationDataManager.save(observationResponse.body().getResources());
                     break;
                 case ORGANIZATION:
                     break;
                 case PATIENT:
+                    Call<NdJson<Patient>> patientCall= apiClient.getPatientResources(url, authorization);
+                    Response<NdJson<Patient>> patientResponse = patientCall.execute();
+                    patientDataManager.save(patientResponse.body().getResources());
                     break;
                 case PROCEDURE:
                     break;

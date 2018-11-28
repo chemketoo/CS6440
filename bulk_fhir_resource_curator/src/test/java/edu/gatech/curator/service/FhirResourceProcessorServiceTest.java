@@ -5,11 +5,15 @@ import edu.gatech.curator.entity.SourceSystem;
 import edu.gatech.curator.factory.RetrofitClientFactory;
 import edu.gatech.curator.manager.AllergyIntoleranceDataManager;
 import edu.gatech.curator.manager.CarePlanDataManager;
+import edu.gatech.curator.manager.ObservationDataManager;
+import edu.gatech.curator.manager.PatientDataManager;
 import edu.gatech.curator.model.ExportOutputResponse;
 import edu.gatech.curator.model.NdJson;
 import okhttp3.HttpUrl;
 import org.hl7.fhir.dstu3.model.AllergyIntolerance;
 import org.hl7.fhir.dstu3.model.CarePlan;
+import org.hl7.fhir.dstu3.model.Observation;
+import org.hl7.fhir.dstu3.model.Patient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +50,12 @@ public class FhirResourceProcessorServiceTest {
 
     @MockBean
     private CarePlanDataManager carePlanDataManager;
+
+    @MockBean
+    private PatientDataManager patientDataManager;
+
+    @MockBean
+    private ObservationDataManager observationDataManager;
 
     @Autowired
     FhirResourceProcessorService subject;
@@ -97,5 +107,31 @@ public class FhirResourceProcessorServiceTest {
 
         verify(bulkApiClient).getCarePlanResources(url, authorization);
         verify(carePlanDataManager).save(listOfResources);
+    }
+
+    @Test
+    public void process_retrievesPatientResourcesFromBulkFhirApi() throws IOException {
+        exports.add(new ExportOutputResponse.ExportOutput("Patient", 1, urlString));
+        Call<NdJson<Patient>> mockCall = mock(Call.class);
+        when(mockCall.execute()).thenAnswer(invocation -> Response.success(ndJson));
+        when(bulkApiClient.getPatientResources(url, authorization)).thenReturn(mockCall);
+
+        subject.process(exports, sourceSystem);
+
+        verify(bulkApiClient).getPatientResources(url, authorization);
+        verify(patientDataManager).save(listOfResources);
+    }
+
+    @Test
+    public void process_retrievesObservationResourcesFromBulkFhirApi() throws IOException {
+        exports.add(new ExportOutputResponse.ExportOutput("Observation", 1, urlString));
+        Call<NdJson<Observation>> mockCall = mock(Call.class);
+        when(mockCall.execute()).thenAnswer(invocation -> Response.success(ndJson));
+        when(bulkApiClient.getObseravationResources(url, authorization)).thenReturn(mockCall);
+
+        subject.process(exports, sourceSystem);
+
+        verify(bulkApiClient).getObseravationResources(url, authorization);
+        verify(observationDataManager).save(listOfResources);
     }
 }

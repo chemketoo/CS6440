@@ -7,6 +7,8 @@ import edu.gatech.curator.model.OperationOutcomeResponse;
 import okhttp3.HttpUrl;
 import org.hl7.fhir.dstu3.model.AllergyIntolerance;
 import org.hl7.fhir.dstu3.model.CarePlan;
+import org.hl7.fhir.dstu3.model.Observation;
+import org.hl7.fhir.dstu3.model.Patient;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -37,4 +39,12 @@ public interface BulkFhirApiClient {
     @GET
     Call<NdJson<CarePlan>> getCarePlanResources(@Url HttpUrl url,
                                                 @Header("Authorization") String authorization);
+
+    @GET
+    Call<NdJson<Patient>> getPatientResources(@Url HttpUrl url,
+                                              @Header("Authorization") String authorization);
+
+    @GET
+    Call<NdJson<Observation>> getObseravationResources(@Url HttpUrl url,
+                                                       @Header("Authorization") String authorization);
 }
