@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
@@ -116,7 +117,7 @@ public class CuratorServiceTest {
     }
 
     @Test
-    public void start_processOutputResourceTypesWhenExportOperationIsComplete() {
+    public void start_processOutputResourceTypesWhenExportOperationIsComplete() throws IOException {
         subject.start();
 
         verify(resourceProcessor).process(exportedResources1, expiredSourceSystem1);

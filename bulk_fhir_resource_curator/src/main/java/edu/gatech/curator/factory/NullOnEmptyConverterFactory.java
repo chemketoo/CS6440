@@ -11,9 +11,11 @@ public class NullOnEmptyConverterFactory extends Converter.Factory {
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
         final Converter<ResponseBody, ?> delegate = retrofit.nextResponseBodyConverter(this, type, annotations);
-        return (Converter<ResponseBody, Object>) body -> {
+
+        return body -> {
             if (body.contentLength() == 0) return null;
             return delegate.convert(body);
         };
     }
 }
+
