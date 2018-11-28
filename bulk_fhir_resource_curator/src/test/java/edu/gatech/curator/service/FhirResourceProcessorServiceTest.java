@@ -4,10 +4,12 @@ import edu.gatech.curator.client.BulkFhirApiClient;
 import edu.gatech.curator.entity.SourceSystem;
 import edu.gatech.curator.factory.RetrofitClientFactory;
 import edu.gatech.curator.manager.AllergyIntoleranceDataManager;
+import edu.gatech.curator.manager.CarePlanDataManager;
 import edu.gatech.curator.model.ExportOutputResponse;
 import edu.gatech.curator.model.NdJson;
 import okhttp3.HttpUrl;
 import org.hl7.fhir.dstu3.model.AllergyIntolerance;
+import org.hl7.fhir.dstu3.model.CarePlan;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +22,7 @@ import retrofit2.Response;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -34,52 +33,69 @@ import static org.mockito.Mockito.*;
 public class FhirResourceProcessorServiceTest {
 
     @MockBean
+    private SourceSystemService mockSourceSystemService;
+
+    @MockBean
     private RetrofitClientFactory retrofitClientFactory;
 
     @MockBean
     private BulkFhirApiClient bulkApiClient;
 
     @MockBean
-    private SourceSystemService mockSourceSystemService;
+    private AllergyIntoleranceDataManager allergyIntoleranceDataManager;
 
     @MockBean
-    private AllergyIntoleranceDataManager allergyIntoleranceDataManager;
+    private CarePlanDataManager carePlanDataManager;
 
     @Autowired
     FhirResourceProcessorService subject;
+    private String urlString;
+    private HttpUrl url;
+    private List<ExportOutputResponse.ExportOutput> exports;
+    private String accessToken;
+    private SourceSystem sourceSystem;
+    private String authorization;
+    private NdJson<?> ndJson;
+    private List listOfResources;
 
     @Before
     public void setUp() throws MalformedURLException {
         when(retrofitClientFactory.getAPIClient(any(SourceSystem.class))).thenReturn(bulkApiClient);
+        urlString = "http://example-server.net";
+        url = HttpUrl.parse(urlString);
+        exports = new ArrayList<>();
+        accessToken = "access-token";
+        sourceSystem = mock(SourceSystem.class);
+        when(sourceSystem.getAccessToken()).thenReturn(accessToken);
+        authorization = "bearer " + accessToken;
+        ndJson = mock(NdJson.class);
+        listOfResources = mock(List.class);
+        when(ndJson.getResources()).thenReturn(listOfResources);
     }
 
     @Test
-    public void startsTheProcessCuratingEachFhirResourceType() throws ParseException, IOException {
-        String urlString = "http://example-server.net";
-        HttpUrl url = HttpUrl.parse(urlString);
-
-        List<ExportOutputResponse.ExportOutput> exports = new ArrayList<>();
-        exports.add(new ExportOutputResponse.ExportOutput("AllergyIntolerance", 10, urlString));
-
-        Date date = new SimpleDateFormat("YYYY-MM-dd").parse("2018-02-01");
-
-        String accessToken = "access-token";
-        SourceSystem sourceSystem = new SourceSystem("loc", "cId", "kid", "jku", date, accessToken);
-
+    public void process_retrievesAllergyIntoleranceResourcesFromBulkFhirApi() throws IOException {
+        exports.add(new ExportOutputResponse.ExportOutput("AllergyIntolerance", 1, urlString));
         Call<NdJson<AllergyIntolerance>> mockCall = mock(Call.class);
-        NdJson<AllergyIntolerance> ndJson = mock(NdJson.class);
-        List listOfAllergyIntoleranceResources = mock(List.class);
-        when(ndJson.getResources()).thenReturn(listOfAllergyIntoleranceResources);
-
         when(mockCall.execute()).thenAnswer(invocation -> Response.success(ndJson));
-
-        when(bulkApiClient.getAllergyIntoleranceResource(url, "bearer " + accessToken)).thenReturn(mockCall);
+        when(bulkApiClient.getAllergyIntoleranceResource(url, authorization)).thenReturn(mockCall);
 
         subject.process(exports, sourceSystem);
 
-
-        String authorization = "bearer " + accessToken;
         verify(bulkApiClient).getAllergyIntoleranceResource(url, authorization);
-        verify(allergyIntoleranceDataManager).save(listOfAllergyIntoleranceResources);
+        verify(allergyIntoleranceDataManager).save(listOfResources);
+    }
+
+    @Test
+    public void process_retrievesCarePlanResourcesFromBulkFhirApi() throws IOException {
+        exports.add(new ExportOutputResponse.ExportOutput("CarePlan", 1, urlString));
+        Call<NdJson<CarePlan>> mockCall = mock(Call.class);
+        when(mockCall.execute()).thenAnswer(invocation -> Response.success(ndJson));
+        when(bulkApiClient.getCarePlanResources(url, authorization)).thenReturn(mockCall);
+
+        subject.process(exports, sourceSystem);
+
+        verify(bulkApiClient).getCarePlanResources(url, authorization);
+        verify(carePlanDataManager).save(listOfResources);
     }
 }

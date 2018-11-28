@@ -1,12 +1,12 @@
 package edu.gatech.curator.client;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import edu.gatech.curator.model.AccessTokenResponse;
+import edu.gatech.curator.model.ExportOutputResponse;
 import edu.gatech.curator.model.NdJson;
 import edu.gatech.curator.model.OperationOutcomeResponse;
-import edu.gatech.curator.model.ExportOutputResponse;
 import okhttp3.HttpUrl;
 import org.hl7.fhir.dstu3.model.AllergyIntolerance;
+import org.hl7.fhir.dstu3.model.CarePlan;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -33,4 +33,8 @@ public interface BulkFhirApiClient {
     @GET
     Call<NdJson<AllergyIntolerance>> getAllergyIntoleranceResource(@Url HttpUrl url,
                                                                    @Header("Authorization") String authorization);
+
+    @GET
+    Call<NdJson<CarePlan>> getCarePlanResources(@Url HttpUrl url,
+                                                @Header("Authorization") String authorization);
 }

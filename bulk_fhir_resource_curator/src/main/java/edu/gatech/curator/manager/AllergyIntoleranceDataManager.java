@@ -9,5 +9,6 @@ import java.util.List;
 public class AllergyIntoleranceDataManager {
     public void save(List<AllergyIntolerance> allergyIntolerances) {
 
+
     }
 }
