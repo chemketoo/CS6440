@@ -88,6 +88,8 @@ public class FhirResourceProcessorService {
                     Response<NdJson<Patient>> patientResponse = patientCall.execute();
                     patientDataManager.save(patientResponse.body().getResources());
                     break;
+                case BASIC:
+                    break;
                 case PROCEDURE:
                     break;
             }
@@ -108,7 +110,10 @@ public class FhirResourceProcessorService {
         OBSERVATION,
         ORGANIZATION,
         PATIENT,
-        PROCEDURE
+        PROCEDURE,
+        BASIC,
+        EXPLANATION_OF_BENEFIT,
+        PRACTITIONER
     }
 
     private static HashMap<String, FhirResourceType> FHIR_RESOURCE_MAP = new HashMap<String, FhirResourceType>(){{
@@ -126,5 +131,8 @@ public class FhirResourceProcessorService {
        put("Organization", FhirResourceType.ORGANIZATION);
        put("Patient", FhirResourceType.PATIENT);
        put("Procedure", FhirResourceType.PROCEDURE);
+       put("Basic", FhirResourceType.BASIC);
+       put("ExplanationOfBenefit", FhirResourceType.EXPLANATION_OF_BENEFIT);
+       put("Practitioner", FhirResourceType.PRACTITIONER);
     }};
 }
