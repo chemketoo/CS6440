@@ -1,7 +1,7 @@
 package edu.gatech.curator.factory;
 
 import edu.gatech.curator.client.BulkFhirApiClient;
-import edu.gatech.curator.entity.SourceSystem;
+import edu.gatech.curator.entity.SourceSystemEntity;
 import edu.gatech.curator.service.CuratorService;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,12 +31,12 @@ public class RetrofitClientFactoryTest {
     @Autowired
     RetrofitClientFactory subject;
 
-    private SourceSystem sourceSystem;
+    private SourceSystemEntity sourceSystem;
 
     @Before
     public void setUp() throws Exception {
         Date date = new SimpleDateFormat("YYYY-MM-dd").parse("2000-01-01");
-        sourceSystem = new SourceSystem("https://enigmatic-waters-34317.herokuapp.com", "random-string", "kid", "adfdsaf", date, "hdafds");
+        sourceSystem = new SourceSystemEntity("hospital_name", "https://enigmatic-waters-34317.herokuapp.com", "random-string", "kid", "adfdsaf", date, "hdafds");
     }
 
     @Test

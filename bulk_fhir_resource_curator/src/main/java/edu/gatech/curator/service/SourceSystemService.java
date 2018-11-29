@@ -1,7 +1,7 @@
 package edu.gatech.curator.service;
 
 import edu.gatech.curator.client.BulkFhirApiClient;
-import edu.gatech.curator.entity.SourceSystem;
+import edu.gatech.curator.entity.SourceSystemEntity;
 import edu.gatech.curator.factory.RetrofitClientFactory;
 import edu.gatech.curator.model.AccessTokenResponse;
 import edu.gatech.curator.model.ExportOutputResponse;
@@ -11,7 +11,6 @@ import edu.gatech.curator.provider.DateProvider;
 import edu.gatech.curator.provider.OperationOutcomeTextUrlProvider;
 import edu.gatech.curator.repository.SourceSystemsRepository;
 import okhttp3.HttpUrl;
-import org.hl7.fhir.dstu3.model.AllergyIntolerance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
@@ -20,7 +19,6 @@ import retrofit2.Response;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,11 +39,11 @@ public class SourceSystemService {
     @Autowired
     private OperationOutcomeTextUrlProvider operationOutcomeTextUrlProvider;
 
-    public List<SourceSystem> retrieveSourceSystemPastDemarcationDate() {
+    public List<SourceSystemEntity> retrieveSourceSystemPastDemarcationDate() {
         return sourceSystemsRepository.findAllByLastUpdatedBefore(dateProvider.oneWeekAgo());
     }
 
-    public String getAccessToken(SourceSystem sourceSystem) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public String getAccessToken(SourceSystemEntity sourceSystem) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
         String clientAssertion = clientAssertionProvider.create(sourceSystem);
         BulkFhirApiClient apiClient = retrofitClientFactory.getAPIClient(sourceSystem);
 
@@ -60,7 +58,7 @@ public class SourceSystemService {
         return body.getAccessToken();
     }
 
-    public HttpUrl startPatientExportOperation(SourceSystem sourceSystem) throws IOException {
+    public HttpUrl startPatientExportOperation(SourceSystemEntity sourceSystem) throws IOException {
         BulkFhirApiClient apiClient = retrofitClientFactory.getAPIClient(sourceSystem);
         String authorization = "bearer " + sourceSystem.getAccessToken();
         Call<OperationOutcomeResponse> call = apiClient.startPatientExportOperation(
@@ -71,7 +69,7 @@ public class SourceSystemService {
         return operationOutcomeTextUrlProvider.parse(outcome.getText().getDiv());
     }
 
-    public List<ExportOutputResponse.ExportOutput> getExportOutputs(HttpUrl url, SourceSystem sourceSystem) throws IOException {
+    public List<ExportOutputResponse.ExportOutput> getExportOutputs(HttpUrl url, SourceSystemEntity sourceSystem) throws IOException {
         int responseCode = 202;
 
         BulkFhirApiClient apiClient = retrofitClientFactory.getAPIClient(sourceSystem);

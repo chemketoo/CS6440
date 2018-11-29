@@ -1,6 +1,6 @@
 package edu.gatech.curator.provider;
 
-import edu.gatech.curator.entity.SourceSystem;
+import edu.gatech.curator.entity.SourceSystemEntity;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class ClientAssertionProvider {
     @Autowired
     private DateProvider dateProvider;
 
-    public String create(SourceSystem sourceSystem) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+    public String create(SourceSystemEntity sourceSystem) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         Key key = keyProvider.getPrivateKey();
 
         Map<String, Object> header = new HashMap<String, Object>() {{
@@ -36,7 +36,7 @@ public class ClientAssertionProvider {
                 .setSubject(sourceSystem.getClientId())
                 .setIssuer(sourceSystem.getClientId())
                 .setExpiration(dateProvider.fifteenMinutesFromNow())
-                .setAudience(sourceSystem.getLocation() + "/auth/token")
+                .setAudience(sourceSystem.getBaseUrl() + "/auth/token")
                 .setId(String.valueOf(UUID.randomUUID()))
                 .signWith(key)
                 .compact();

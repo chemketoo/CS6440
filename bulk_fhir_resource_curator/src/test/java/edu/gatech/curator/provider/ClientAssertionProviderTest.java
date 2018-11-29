@@ -1,6 +1,6 @@
 package edu.gatech.curator.provider;
 
-import edu.gatech.curator.entity.SourceSystem;
+import edu.gatech.curator.entity.SourceSystemEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.junit.Before;
@@ -28,12 +28,12 @@ public class ClientAssertionProviderTest extends BaseProviderTest {
     @Autowired
     ClientAssertionProvider subject;
 
-    private SourceSystem sourceSystem;
+    private SourceSystemEntity sourceSystem;
 
     @Before
     public void setUp() throws Exception {
         Date defaultDate = new Date();
-        sourceSystem = new SourceSystem("http://example.net", "client-id", "keyId", "https://example.net", defaultDate, null);
+        sourceSystem = new SourceSystemEntity("name", "http://example.net", "client-id", "keyId", "https://example.net", defaultDate, null);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class ClientAssertionProviderTest extends BaseProviderTest {
         Key key = keyProvider.getPrivateKey();
         Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jws).getBody();
 
-        assertThat(claims.getAudience()).isEqualTo(sourceSystem.getLocation() + "/auth/token");
+        assertThat(claims.getAudience()).isEqualTo(sourceSystem.getBaseUrl() + "/auth/token");
     }
 
 }

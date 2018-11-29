@@ -1,7 +1,7 @@
 package edu.gatech.curator.service;
 
 import edu.gatech.curator.client.BulkFhirApiClient;
-import edu.gatech.curator.entity.SourceSystem;
+import edu.gatech.curator.entity.SourceSystemEntity;
 import edu.gatech.curator.factory.RetrofitClientFactory;
 import edu.gatech.curator.model.AccessTokenResponse;
 import edu.gatech.curator.model.ExportOutputResponse;
@@ -10,7 +10,6 @@ import edu.gatech.curator.provider.ClientAssertionProvider;
 import edu.gatech.curator.provider.DateProvider;
 import edu.gatech.curator.provider.OperationOutcomeTextUrlProvider;
 import edu.gatech.curator.repository.SourceSystemsRepository;
-import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -27,7 +26,6 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
@@ -40,7 +38,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SourceSystemServiceTest {
+public class SourceSystemEntityServiceTest {
 
     @MockBean
     private DateProvider mockDateProvider;
@@ -67,7 +65,7 @@ public class SourceSystemServiceTest {
     private Call mockCall;
 
     private Date mockedDemarcationDate;
-    private SourceSystem mockSourceSystem;
+    private SourceSystemEntity mockSourceSystem;
     private String mockClientAssertion;
     private String accessToken;
 
@@ -79,7 +77,7 @@ public class SourceSystemServiceTest {
         when(mockDateProvider.oneWeekAgo()).thenReturn(mockedDemarcationDate);
 
         Date lastUpdated = new SimpleDateFormat("YYYY-MM-dd").parse("2000-02-02");
-        mockSourceSystem = new SourceSystem("http://i-need-a.token/auth/token", "a-token-of-some-kind", "key-id-of-jwk", "http://where-jwks-is.at", lastUpdated, accessToken);
+        mockSourceSystem = new SourceSystemEntity("name", "http://i-need-a.token/auth/token", "a-token-of-some-kind", "key-id-of-jwk", "http://where-jwks-is.at", lastUpdated, accessToken);
 
         mockClientAssertion = "signed-jwt-to-use-as-client-assertion";
         when(clientAssertionProvider.create(mockSourceSystem)).thenReturn(mockClientAssertion);
@@ -90,7 +88,7 @@ public class SourceSystemServiceTest {
 
     @Test
     public void callsRepositoryToRetrieveSourceSystemsToCurate() {
-        List<SourceSystem> sourceSystemsToCurate = mock(List.class);
+        List<SourceSystemEntity> sourceSystemsToCurate = mock(List.class);
         when(mockSourceSystemRepository.findAllByLastUpdatedBefore(mockedDemarcationDate)).thenReturn(sourceSystemsToCurate);
 
         assertThat(subject.retrieveSourceSystemPastDemarcationDate()).isSameAs(sourceSystemsToCurate);

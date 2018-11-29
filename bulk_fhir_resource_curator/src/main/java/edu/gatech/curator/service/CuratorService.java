@@ -1,6 +1,6 @@
 package edu.gatech.curator.service;
 
-import edu.gatech.curator.entity.SourceSystem;
+import edu.gatech.curator.entity.SourceSystemEntity;
 import edu.gatech.curator.model.ExportOutputResponse;
 import edu.gatech.curator.repository.SourceSystemsRepository;
 import okhttp3.HttpUrl;
@@ -26,7 +26,7 @@ public class CuratorService {
     private FhirResourceProcessorService resourceProcessor;
 
     public void start() {
-        List<SourceSystem> sourceSystems = sourceSystemService.retrieveSourceSystemPastDemarcationDate();
+        List<SourceSystemEntity> sourceSystems = sourceSystemService.retrieveSourceSystemPastDemarcationDate();
 
         sourceSystems.forEach(ss -> {
             try {

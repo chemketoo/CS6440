@@ -1,8 +1,0 @@
-CREATE TABLE source_system
-	( id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    location VARCHAR(255) NOT NULL,
-    client_id VARCHAR(2048) NOT NULL,
-    kid VARCHAR(255) NOT NULL,
-    jku VARCHAR(255) NOT NULL,
-    access_token VARCHAR(2048),
-    last_updated DATETIME NOT NULL DEFAULT '2000-01-01');

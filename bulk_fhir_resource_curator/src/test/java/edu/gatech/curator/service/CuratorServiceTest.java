@@ -1,6 +1,6 @@
 package edu.gatech.curator.service;
 
-import edu.gatech.curator.entity.SourceSystem;
+import edu.gatech.curator.entity.SourceSystemEntity;
 import edu.gatech.curator.model.ExportOutputResponse;
 import edu.gatech.curator.repository.SourceSystemsRepository;
 import okhttp3.HttpUrl;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
@@ -37,8 +36,8 @@ public class CuratorServiceTest {
     @Autowired
     private CuratorService subject;
 
-    private SourceSystem expiredSourceSystem1;
-    private SourceSystem expiredSourceSystem2;
+    private SourceSystemEntity expiredSourceSystem1;
+    private SourceSystemEntity expiredSourceSystem2;
     private String accessToken1;
     private String accessToken2;
     private HttpUrl sourceSystemExportStatusUrl1;
@@ -49,10 +48,10 @@ public class CuratorServiceTest {
     @Before
     public void setUp() throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 
-        expiredSourceSystem1 = mock(SourceSystem.class);
-        expiredSourceSystem2 = mock(SourceSystem.class);
+        expiredSourceSystem1 = mock(SourceSystemEntity.class);
+        expiredSourceSystem2 = mock(SourceSystemEntity.class);
 
-        List<SourceSystem> sourceSystems = new ArrayList<SourceSystem>() {{
+        List<SourceSystemEntity> sourceSystems = new ArrayList<SourceSystemEntity>() {{
             add(expiredSourceSystem1);
             add(expiredSourceSystem2);
         }};

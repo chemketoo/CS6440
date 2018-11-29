@@ -5,14 +5,17 @@ import java.util.Date;
 
 @Entity
 @Table(name = "source_system")
-public class SourceSystem {
+public class SourceSystemEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "location")
-    private String location;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "base_url")
+    private String baseUrl;
 
     @Column(name = "client_id")
     private String clientId;
@@ -30,10 +33,11 @@ public class SourceSystem {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdated;
 
-    protected SourceSystem() {}
+    protected SourceSystemEntity() {}
 
-    public SourceSystem(String location, String clientId, String kid, String jku, Date lastUpdated, String accessToken) {
-        this.location = location;
+    public SourceSystemEntity(String name, String baseUrl, String clientId, String kid, String jku, Date lastUpdated, String accessToken) {
+        this.name = name;
+        this.baseUrl = baseUrl;
         this.clientId = clientId;
         this.kid = kid;
         this.jku = jku;
@@ -49,12 +53,20 @@ public class SourceSystem {
         this.id = id;
     }
 
-    public String getLocation() {
-        return location;
+    public String getName() {
+        return name;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
     }
 
     public String getClientId() {

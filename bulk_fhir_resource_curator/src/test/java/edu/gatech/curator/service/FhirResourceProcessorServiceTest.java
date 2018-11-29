@@ -1,7 +1,7 @@
 package edu.gatech.curator.service;
 
 import edu.gatech.curator.client.BulkFhirApiClient;
-import edu.gatech.curator.entity.SourceSystem;
+import edu.gatech.curator.entity.SourceSystemEntity;
 import edu.gatech.curator.factory.RetrofitClientFactory;
 import edu.gatech.curator.manager.AllergyIntoleranceDataManager;
 import edu.gatech.curator.manager.CarePlanDataManager;
@@ -17,6 +17,7 @@ import org.hl7.fhir.dstu3.model.Patient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -63,23 +64,27 @@ public class FhirResourceProcessorServiceTest {
     private HttpUrl url;
     private List<ExportOutputResponse.ExportOutput> exports;
     private String accessToken;
-    private SourceSystem sourceSystem;
     private String authorization;
+
+    @Mock
+    private SourceSystemEntity sourceSystem;
+
+    @Mock
     private NdJson<?> ndJson;
+
+    @Mock
     private List listOfResources;
 
     @Before
     public void setUp() throws MalformedURLException {
-        when(retrofitClientFactory.getAPIClient(any(SourceSystem.class))).thenReturn(bulkApiClient);
         urlString = "http://example-server.net";
         url = HttpUrl.parse(urlString);
         exports = new ArrayList<>();
         accessToken = "access-token";
-        sourceSystem = mock(SourceSystem.class);
-        when(sourceSystem.getAccessToken()).thenReturn(accessToken);
         authorization = "bearer " + accessToken;
-        ndJson = mock(NdJson.class);
-        listOfResources = mock(List.class);
+
+        when(retrofitClientFactory.getAPIClient(any(SourceSystemEntity.class))).thenReturn(bulkApiClient);
+        when(sourceSystem.getAccessToken()).thenReturn(accessToken);
         when(ndJson.getResources()).thenReturn(listOfResources);
     }
 
@@ -93,7 +98,7 @@ public class FhirResourceProcessorServiceTest {
         subject.process(exports, sourceSystem);
 
         verify(bulkApiClient).getAllergyIntoleranceResource(url, authorization);
-        verify(allergyIntoleranceDataManager).save(listOfResources);
+        verify(allergyIntoleranceDataManager).save(sourceSystem, listOfResources);
     }
 
     @Test
@@ -106,7 +111,7 @@ public class FhirResourceProcessorServiceTest {
         subject.process(exports, sourceSystem);
 
         verify(bulkApiClient).getCarePlanResources(url, authorization);
-        verify(carePlanDataManager).save(listOfResources);
+        verify(carePlanDataManager).save(sourceSystem, listOfResources);
     }
 
     @Test
@@ -119,7 +124,7 @@ public class FhirResourceProcessorServiceTest {
         subject.process(exports, sourceSystem);
 
         verify(bulkApiClient).getPatientResources(url, authorization);
-        verify(patientDataManager).save(listOfResources);
+        verify(patientDataManager).save(sourceSystem, listOfResources);
     }
 
     @Test
@@ -132,6 +137,6 @@ public class FhirResourceProcessorServiceTest {
         subject.process(exports, sourceSystem);
 
         verify(bulkApiClient).getObseravationResources(url, authorization);
-        verify(observationDataManager).save(listOfResources);
+        verify(observationDataManager).save(sourceSystem, listOfResources);
     }
 }
