@@ -64,8 +64,8 @@ public class SourceSystemEntityServiceTest {
     @Mock
     private Call mockCall;
 
+    private SourceSystemEntity sourceSystem;
     private Date mockedDemarcationDate;
-    private SourceSystemEntity mockSourceSystem;
     private String mockClientAssertion;
     private String accessToken;
 
@@ -77,12 +77,22 @@ public class SourceSystemEntityServiceTest {
         when(mockDateProvider.oneWeekAgo()).thenReturn(mockedDemarcationDate);
 
         Date lastUpdated = new SimpleDateFormat("YYYY-MM-dd").parse("2000-02-02");
-        mockSourceSystem = new SourceSystemEntity("name", "http://i-need-a.token/auth/token", "a-token-of-some-kind", "key-id-of-jwk", "http://where-jwks-is.at", lastUpdated, accessToken);
+        sourceSystem = new SourceSystemEntity() {{
+            setName("name");
+            setTokenPath("auth");
+            setFhirServerPath("fhir");
+            setBaseUrl("http://i-need-a.token/");
+            setClientId("a-token-of-some-kind");
+            setKid("key-id-of-jwk");
+            setJku("http://where-jwks-is.at");
+            setLastUpdated(lastUpdated);
+            setAccessToken(accessToken);
+        }};
 
         mockClientAssertion = "signed-jwt-to-use-as-client-assertion";
-        when(clientAssertionProvider.create(mockSourceSystem)).thenReturn(mockClientAssertion);
+        when(clientAssertionProvider.create(sourceSystem)).thenReturn(mockClientAssertion);
 
-        when(retrofitClientFactory.getAPIClient(mockSourceSystem)).thenReturn(bulkFhirApiClient);
+        when(retrofitClientFactory.getAPIClient(sourceSystem)).thenReturn(bulkFhirApiClient);
 
     }
 
@@ -99,15 +109,15 @@ public class SourceSystemEntityServiceTest {
         when(mockCall.execute()).thenAnswer((Answer<Response<AccessTokenResponse>>) invocation ->
                 Response.success(new AccessTokenResponse("bearer", 900, accessToken)));
         when(bulkFhirApiClient.createAccessToken(
+                "auth",
                 "system/*.read",
                 "client_credentials",
-                "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-                mockClientAssertion)).thenReturn(mockCall);
+                "urn:ietf:params:oauth:client-assertion-type:jwt-bearer", mockClientAssertion)).thenReturn(mockCall);
 
-        String actual = subject.getAccessToken(mockSourceSystem);
+        String actual = subject.getAccessToken(sourceSystem);
 
-        verify(clientAssertionProvider).create(mockSourceSystem);
-        verify(retrofitClientFactory).getAPIClient(mockSourceSystem);
+        verify(clientAssertionProvider).create(sourceSystem);
+        verify(retrofitClientFactory).getAPIClient(sourceSystem);
 
         assertThat(actual).isEqualTo("expected-access-token");
     }
@@ -125,11 +135,11 @@ public class SourceSystemEntityServiceTest {
         when(mockCall.execute()).thenAnswer((Answer<Response<OperationOutcomeResponse>>) invocation -> Response.success(operationOutcomeResponse));
 
         String authorization = "bearer " + accessToken;
-        when(bulkFhirApiClient.startPatientExportOperation(authorization, "application/fhir+ndjson")).thenReturn(mockCall);
+        when(bulkFhirApiClient.startPatientExportOperation("fhir", authorization, "application/fhir+ndjson")).thenReturn(mockCall);
 
-        HttpUrl actual = subject.startPatientExportOperation(mockSourceSystem);
+        HttpUrl actual = subject.startPatientExportOperation(sourceSystem);
 
-        verify(retrofitClientFactory).getAPIClient(mockSourceSystem);
+        verify(retrofitClientFactory).getAPIClient(sourceSystem);
         assertThat(actual).isSameAs(expectedUrl);
     }
 
@@ -153,7 +163,7 @@ public class SourceSystemEntityServiceTest {
                 .thenAnswer((Answer<Response>) i -> acceptedResponse)
                 .thenAnswer((Answer<Response<ExportOutputResponse>>) i -> Response.success(response));
 
-        assertThat(subject.getExportOutputs(url, mockSourceSystem)).isSameAs(expectedList);
+        assertThat(subject.getExportOutputs(url, sourceSystem)).isSameAs(expectedList);
         verify(mockCall, times(2)).execute();
     }
 }

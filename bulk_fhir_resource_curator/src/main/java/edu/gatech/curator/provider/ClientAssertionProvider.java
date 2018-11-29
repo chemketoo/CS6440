@@ -36,7 +36,8 @@ public class ClientAssertionProvider {
                 .setSubject(sourceSystem.getClientId())
                 .setIssuer(sourceSystem.getClientId())
                 .setExpiration(dateProvider.fifteenMinutesFromNow())
-                .setAudience(sourceSystem.getBaseUrl() + "/auth/token")
+                .setAudience(sourceSystem.getBaseUrl() + sourceSystem.getTokenPath()
+                )
                 .setId(String.valueOf(UUID.randomUUID()))
                 .signWith(key)
                 .compact();

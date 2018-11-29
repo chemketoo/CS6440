@@ -48,10 +48,10 @@ public class SourceSystemService {
         BulkFhirApiClient apiClient = retrofitClientFactory.getAPIClient(sourceSystem);
 
         Call<AccessTokenResponse> call = apiClient.createAccessToken(
+                sourceSystem.getTokenPath(),
                 "system/*.read",
                 "client_credentials",
-                "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-                clientAssertion);
+                "urn:ietf:params:oauth:client-assertion-type:jwt-bearer", clientAssertion);
 
         Response<AccessTokenResponse> response = call.execute();
         AccessTokenResponse body = response.body();
@@ -62,8 +62,8 @@ public class SourceSystemService {
         BulkFhirApiClient apiClient = retrofitClientFactory.getAPIClient(sourceSystem);
         String authorization = "bearer " + sourceSystem.getAccessToken();
         Call<OperationOutcomeResponse> call = apiClient.startPatientExportOperation(
-                authorization,
-                "application/fhir+ndjson");
+                sourceSystem.getFhirServerPath(),
+                authorization, "application/fhir+ndjson");
         Response<OperationOutcomeResponse> response = call.execute();
         OperationOutcomeResponse outcome = response.body();
         return operationOutcomeTextUrlProvider.parse(outcome.getText().getDiv());
@@ -85,8 +85,14 @@ public class SourceSystemService {
              if (responseCode == 200) {
                  return response.body().getOutput();
             }
+
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         throw new IOException("Received response status from server that was neither ok or accepted.");
     }
-
 }
+

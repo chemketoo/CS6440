@@ -14,18 +14,19 @@ import retrofit2.http.*;
 
 public interface BulkFhirApiClient {
     @FormUrlEncoded
-    @POST("auth/token")
-    Call<AccessTokenResponse> createAccessToken(@Field("scope") String scope,
+    @POST("{tokenPath}")
+    Call<AccessTokenResponse> createAccessToken(@Path(value = "tokenPath", encoded = true) String tokenPath,
+                                                @Field("scope") String scope,
                                                 @Field("grant_type") String grantType,
                                                 @Field("client_assertion_type") String clientAssertionType,
                                                 @Field("client_assertion") String clientAssertion);
-                                                @Headers({
-                                                    "Accept: application/fhir+json",
-                                                    "Prefer: respond-async"
-                                                })
 
-    @GET("fhir/Patient/$export")
-    Call<OperationOutcomeResponse> startPatientExportOperation(@Header("Authorization") String authorization,
+    @Headers({
+        "Accept: application/fhir+json",
+        "Prefer: respond-async"})
+    @GET("{fhirServerPath}/Patient/$export")
+    Call<OperationOutcomeResponse> startPatientExportOperation(@Path(value = "fhirServerPath", encoded = true) String fhirServerPath,
+                                                               @Header("Authorization") String authorization,
                                                                @Query("_outputFormat") String exportFormat);
 
     @GET

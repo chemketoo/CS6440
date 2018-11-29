@@ -84,7 +84,7 @@ public class FhirResourceProcessorService {
                 case ORGANIZATION:
                     break;
                 case PATIENT:
-                    Call<NdJson<Patient>> patientCall= apiClient.getPatientResources(url, authorization);
+                    Call<NdJson<Patient>> patientCall = apiClient.getPatientResources(url, authorization);
                     Response<NdJson<Patient>> patientResponse = patientCall.execute();
                     patientDataManager.save(sourceSystem, patientResponse.body().getResources());
                     break;

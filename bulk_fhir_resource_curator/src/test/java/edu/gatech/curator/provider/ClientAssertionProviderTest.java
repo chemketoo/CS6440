@@ -33,7 +33,17 @@ public class ClientAssertionProviderTest extends BaseProviderTest {
     @Before
     public void setUp() throws Exception {
         Date defaultDate = new Date();
-        sourceSystem = new SourceSystemEntity("name", "http://example.net", "client-id", "keyId", "https://example.net", defaultDate, null);
+        sourceSystem = new SourceSystemEntity() {{
+           setName("name");
+           setTokenPath("token");
+           setFhirServerPath("fhir");
+           setBaseUrl("http://example.net");
+           setClientId("client-id");
+           setKid("keyId");
+           setJku("https://example.net");
+           setLastUpdated(defaultDate);
+           setAccessToken("accessToken");
+        }};
     }
 
     @Test
@@ -43,7 +53,7 @@ public class ClientAssertionProviderTest extends BaseProviderTest {
         Key key = keyProvider.getPrivateKey();
         Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jws).getBody();
 
-        assertThat(claims.getAudience()).isEqualTo(sourceSystem.getBaseUrl() + "/auth/token");
+        assertThat(claims.getAudience()).isEqualTo(sourceSystem.getBaseUrl() + sourceSystem.getTokenPath());
     }
 
 }

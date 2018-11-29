@@ -33,17 +33,11 @@ public class SourceSystemEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdated;
 
-    protected SourceSystemEntity() {}
+    @Column(name = "tokenPath")
+    private String tokenPath;
 
-    public SourceSystemEntity(String name, String baseUrl, String clientId, String kid, String jku, Date lastUpdated, String accessToken) {
-        this.name = name;
-        this.baseUrl = baseUrl;
-        this.clientId = clientId;
-        this.kid = kid;
-        this.jku = jku;
-        this.lastUpdated = lastUpdated;
-        this.accessToken = accessToken;
-    }
+    @Column(name = "fhirServerPath")
+    private String fhirServerPath;
 
     public Long getId() {
         return id;
@@ -107,5 +101,21 @@ public class SourceSystemEntity {
 
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public String getTokenPath() {
+        return tokenPath;
+    }
+
+    public void setTokenPath(String tokenPath) {
+        this.tokenPath = tokenPath;
+    }
+
+    public String getFhirServerPath() {
+        return fhirServerPath;
+    }
+
+    public void setFhirServerPath(String fhirServerPath) {
+        this.fhirServerPath = fhirServerPath;
     }
 }

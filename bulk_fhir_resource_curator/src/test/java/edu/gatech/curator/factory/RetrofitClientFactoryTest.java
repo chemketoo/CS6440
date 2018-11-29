@@ -6,6 +6,7 @@ import edu.gatech.curator.service.CuratorService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,10 +14,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.MalformedURLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -31,12 +31,12 @@ public class RetrofitClientFactoryTest {
     @Autowired
     RetrofitClientFactory subject;
 
+    @Mock
     private SourceSystemEntity sourceSystem;
 
     @Before
-    public void setUp() throws Exception {
-        Date date = new SimpleDateFormat("YYYY-MM-dd").parse("2000-01-01");
-        sourceSystem = new SourceSystemEntity("hospital_name", "https://enigmatic-waters-34317.herokuapp.com", "random-string", "kid", "adfdsaf", date, "hdafds");
+    public void setUp() {
+        when(sourceSystem.getBaseUrl()).thenReturn("http://localhost.test");
     }
 
     @Test
