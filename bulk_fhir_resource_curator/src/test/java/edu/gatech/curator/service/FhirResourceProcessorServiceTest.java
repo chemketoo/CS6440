@@ -15,6 +15,7 @@ import org.hl7.fhir.dstu3.model.CarePlan;
 import org.hl7.fhir.dstu3.model.Observation;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -89,32 +90,6 @@ public class FhirResourceProcessorServiceTest {
     }
 
     @Test
-    public void process_retrievesAllergyIntoleranceResourcesFromBulkFhirApi() throws IOException {
-        exports.add(new ExportOutputResponse.ExportOutput("AllergyIntolerance", 1, urlString));
-        Call<NdJson<AllergyIntolerance>> mockCall = mock(Call.class);
-        when(mockCall.execute()).thenAnswer(invocation -> Response.success(ndJson));
-        when(bulkApiClient.getAllergyIntoleranceResource(url, authorization)).thenReturn(mockCall);
-
-        subject.process(exports, sourceSystem);
-
-        verify(bulkApiClient).getAllergyIntoleranceResource(url, authorization);
-        verify(allergyIntoleranceDataManager).save(sourceSystem, listOfResources);
-    }
-
-    @Test
-    public void process_retrievesCarePlanResourcesFromBulkFhirApi() throws IOException {
-        exports.add(new ExportOutputResponse.ExportOutput("CarePlan", 1, urlString));
-        Call<NdJson<CarePlan>> mockCall = mock(Call.class);
-        when(mockCall.execute()).thenAnswer(invocation -> Response.success(ndJson));
-        when(bulkApiClient.getCarePlanResources(url, authorization)).thenReturn(mockCall);
-
-        subject.process(exports, sourceSystem);
-
-        verify(bulkApiClient).getCarePlanResources(url, authorization);
-        verify(carePlanDataManager).save(sourceSystem, listOfResources);
-    }
-
-    @Test
     public void process_retrievesPatientResourcesFromBulkFhirApi() throws IOException {
         exports.add(new ExportOutputResponse.ExportOutput("Patient", 1, urlString));
         Call<NdJson<Patient>> mockCall = mock(Call.class);
@@ -138,5 +113,31 @@ public class FhirResourceProcessorServiceTest {
 
         verify(bulkApiClient).getObseravationResources(url, authorization);
         verify(observationDataManager).save(sourceSystem, listOfResources);
+    }
+
+    @Test
+    public void process_retrievesAllergyIntoleranceResourcesFromBulkFhirApi() throws IOException {
+        exports.add(new ExportOutputResponse.ExportOutput("AllergyIntolerance", 1, urlString));
+        Call<NdJson<AllergyIntolerance>> mockCall = mock(Call.class);
+        when(mockCall.execute()).thenAnswer(invocation -> Response.success(ndJson));
+        when(bulkApiClient.getAllergyIntoleranceResource(url, authorization)).thenReturn(mockCall);
+
+        subject.process(exports, sourceSystem);
+
+        verify(bulkApiClient).getAllergyIntoleranceResource(url, authorization);
+        verify(allergyIntoleranceDataManager).save(sourceSystem, listOfResources);
+    }
+
+    @Test
+    public void process_retrievesCarePlanResourcesFromBulkFhirApi() throws IOException {
+        exports.add(new ExportOutputResponse.ExportOutput("CarePlan", 1, urlString));
+        Call<NdJson<CarePlan>> mockCall = mock(Call.class);
+        when(mockCall.execute()).thenAnswer(invocation -> Response.success(ndJson));
+        when(bulkApiClient.getCarePlanResources(url, authorization)).thenReturn(mockCall);
+
+        subject.process(exports, sourceSystem);
+
+        verify(bulkApiClient).getCarePlanResources(url, authorization);
+        verify(carePlanDataManager).save(sourceSystem, listOfResources);
     }
 }

@@ -50,6 +50,18 @@ public class FhirResourceProcessorService {
             String authorization = "bearer " + sourceSystem.getAccessToken();
 
             switch (FHIR_RESOURCE_MAP.get(e.getType())) {
+                case CLAIM:
+                case CONDITION:
+                case DIAGNOSTIC_REPORT:
+                case ENCOUNTER:
+                case GOAL:
+                case IMAGING_STUDY:
+                case IMMUNIZATION:
+                case MEDICATION_REQUEST:
+                case BASIC:
+                case ORGANIZATION:
+                case PROCEDURE:
+                    break;
                 case ALLERGY_INTOLERANCE:
                     Call<NdJson<AllergyIntolerance>> allergyIntoleranceCall = apiClient.getAllergyIntoleranceResource(url, authorization);
                     Response<NdJson<AllergyIntolerance>> allergyIntoleranceResponse = allergyIntoleranceCall.execute();
@@ -60,37 +72,15 @@ public class FhirResourceProcessorService {
                     Response<NdJson<CarePlan>> carePlanResponse = carePlanCall.execute();
                     carePlanDataManager.save(sourceSystem, carePlanResponse.body().getResources());
                     break;
-                case CLAIM:
-                    break;
-                case CONDITION:
-                    break;
-                case DIAGNOSTIC_REPORT:
-                    break;
-                case ENCOUNTER:
-                    break;
-                case GOAL:
-                    break;
-                case IMAGING_STUDY:
-                    break;
-                case IMMUNIZATION:
-                    break;
-                case MEDICATION_REQUEST:
-                    break;
                 case OBSERVATION:
                     Call<NdJson<Observation>> observationCall= apiClient.getObseravationResources(url, authorization);
                     Response<NdJson<Observation>> observationResponse = observationCall.execute();
                     observationDataManager.save(sourceSystem, observationResponse.body().getResources());
                     break;
-                case ORGANIZATION:
-                    break;
                 case PATIENT:
                     Call<NdJson<Patient>> patientCall = apiClient.getPatientResources(url, authorization);
                     Response<NdJson<Patient>> patientResponse = patientCall.execute();
                     patientDataManager.save(sourceSystem, patientResponse.body().getResources());
-                    break;
-                case BASIC:
-                    break;
-                case PROCEDURE:
                     break;
             }
         }

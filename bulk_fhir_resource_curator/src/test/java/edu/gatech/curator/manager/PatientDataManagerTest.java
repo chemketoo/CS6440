@@ -24,12 +24,11 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class PatientDataManagerTest {
 
     @InjectMocks
-    PatientDataManager subject;
+    private PatientDataManager subject;
 
     @Mock
-    PatientRepository patientRepository;
+    private PatientRepository patientRepository;
 
-    @Mock
     private SourceSystemEntity sourceSystem;
     private List<Patient> patients;
 
@@ -37,9 +36,9 @@ public class PatientDataManagerTest {
     public void setUp() throws Exception {
         initMocks(this);
 
+        sourceSystem = mock(SourceSystemEntity.class);
         when(sourceSystem.getId()).thenReturn(42l);
         when(sourceSystem.getName()).thenReturn("the-answer");
-        //address.getExtensionsByUrl("http://hl7.org/fhir/StructureDefinition/geolocation").get(0).getExtensionsByUrl("latitude").get(0)
         patients = new ArrayList<Patient>() {{
             add(new Patient() {{
                 setId("pId-1");
