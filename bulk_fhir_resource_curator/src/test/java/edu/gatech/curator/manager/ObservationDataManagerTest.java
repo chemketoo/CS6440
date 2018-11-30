@@ -1,6 +1,5 @@
 package edu.gatech.curator.manager;
 
-import edu.gatech.curator.entity.ObservationEntity;
 import edu.gatech.curator.entity.SourceSystemEntity;
 import edu.gatech.curator.repository.ObservationRepository;
 import org.hl7.fhir.dstu3.model.*;
@@ -18,9 +17,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,15 +34,6 @@ public class ObservationDataManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        // observationId
-        // patientId
-        // issued
-        // code text
-        // value quantity / value
-        // value quantity / unit
-        // source system id
-        // source system name
-
         sourceSystem = mock(SourceSystemEntity.class);
         when(sourceSystem.getId()).thenReturn(42l);
         when(sourceSystem.getName()).thenReturn("iClinic");
@@ -84,16 +72,6 @@ public class ObservationDataManagerTest {
 
         subject.save(sourceSystem, observations);
 
-        ObservationEntity expectedEntity1 = new ObservationEntity() {{
-            setId("some-observation-guid");
-            setPatientId("some-patient-id");
-            setIssued(observationDate);
-            setCodeText("Body Mass Index");
-            setQuantityValue(16.76230320043242);
-            setQuantityUnit("kg/m2");
-            setSourceSystemId(42l);
-            setSourceSystemName("iClinic");
-        }};
         verify(observationRepository).save(argThat(a ->
                 a.getId().contentEquals("some-observation-guid") &&
                 a.getPatientId().contentEquals("some-patient-guid") &&
