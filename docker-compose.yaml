@@ -31,6 +31,12 @@ services:
     restart: always
     ports:
       - 5001:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bulk_fhir_datastore?useSSL=false&&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: doctor*who
+      SPRING_DATASOURCE_PASSWORD: cyber*men
+    depends_on:
+      - "mysql"
   bulk-fhir-curator:
     image: bulk-fhir-curator:latest
     build: 
