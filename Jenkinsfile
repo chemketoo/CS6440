@@ -13,6 +13,7 @@ pipeline{
             //line between the ''' characters will be treated as separate lines of a shell script.
             steps {
                 sh '''cd ./bulk_fhir_server && ./mvnw package'''
+                sh '''cd ./bulk_fhir_curatore && ./gradlew build'''
             }
         }
 
@@ -33,6 +34,9 @@ pipeline{
 
                         def bulk_fhir_server = docker.build("bulk-fhir-server:1.0", "-f ./bulk_fhir_server/Dockerfile ./bulk_fhir_server")
                         bulk_fhir_server.push('latest')
+
+                        def bulk_fhir_curator = docker.build("bulk-fhir-curator:1.0", "-f ./bulk_fhir_resource_curator/Dockerfile ./bulk_fhir_resource_curator")
+                        bulk_fhir_curator.push('latest')
                     }
                 }
             }
@@ -44,6 +48,7 @@ pipeline{
                     rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/jwks-server:latest', ports: '', service: 'fbo/jwks-server', timeout: 50
                     rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-client:latest', ports: '', service: 'fbo/bulk-fhir-client', timeout: 50
                     rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-server:latest', ports: '', service: 'fbo/bulk-fhir-server', timeout: 50
+                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk_fhir_curator:latest', ports: '', service: 'fbo/bulk_fhir_curator', timeout: 50
                 }
             }
         }
