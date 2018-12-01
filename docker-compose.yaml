@@ -4,10 +4,10 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: bulk_fhir_datastore
-      MYSQL_USER: doctor*who
-      MYSQL_PASSWORD: cyber*men
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=bulk_fhir_datastore
+      - MYSQL_USER=doctor*who
+      - MYSQL_PASSWORD=cyber*men
   jwks-server:
     image: jwks-server:latest
     build: 
