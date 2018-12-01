@@ -23,8 +23,6 @@ services:
     ports:
       - 5000:80
   bulk-fhir-server:
-    environment:
-      - CORS_ORIGIN=https://cs6440-f18-prj20.apps.hdap.gatech.edu
     image: bulk-fhir-server:latest
     build: 
       context: bulk_fhir_server
@@ -32,9 +30,10 @@ services:
     ports:
       - 5001:8080
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bulk_fhir_datastore?useSSL=false&&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: doctor*who
-      SPRING_DATASOURCE_PASSWORD: cyber*men
+      - CORS_ORIGIN=https://cs6440-f18-prj20.apps.hdap.gatech.edu
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bulk_fhir_datastore?useSSL=false&&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=doctor*who
+      - SPRING_DATASOURCE_PASSWORD=cyber*men
     depends_on:
       - "mysql"
   bulk-fhir-curator:
@@ -43,9 +42,9 @@ services:
       context: bulk_fhir_resource_curator
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bulk_fhir_datastore?useSSL=false&&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: doctor*who
-      SPRING_DATASOURCE_PASSWORD: cyber*men
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bulk_fhir_datastore?useSSL=false&&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=doctor*who
+      - SPRING_DATASOURCE_PASSWORD=cyber*men
     depends_on:
       - "mysql"
       
