@@ -44,45 +44,50 @@ public class FhirResourceProcessorService {
     public void process(List<ExportOutputResponse.ExportOutput> exportOutputs, SourceSystemEntity sourceSystem) throws IOException {
         BulkFhirApiClient apiClient = clientFactory.getAPIClient(sourceSystem);
 
-        for (ExportOutputResponse.ExportOutput e :
+        for (ExportOutputResponse.ExportOutput exportOutput :
                 exportOutputs) {
-            HttpUrl url = HttpUrl.parse(e.getUrl());
+            HttpUrl url = HttpUrl.parse(exportOutput.getUrl());
             String authorization = "bearer " + sourceSystem.getAccessToken();
-
-            switch (FHIR_RESOURCE_MAP.get(e.getType())) {
-                case CLAIM:
-                case CONDITION:
-                case DIAGNOSTIC_REPORT:
-                case ENCOUNTER:
-                case GOAL:
-                case IMAGING_STUDY:
-                case IMMUNIZATION:
-                case MEDICATION_REQUEST:
-                case BASIC:
-                case ORGANIZATION:
-                case PROCEDURE:
-                    break;
-                case ALLERGY_INTOLERANCE:
-                    Call<NdJson<AllergyIntolerance>> allergyIntoleranceCall = apiClient.getAllergyIntoleranceResource(url, authorization);
-                    Response<NdJson<AllergyIntolerance>> allergyIntoleranceResponse = allergyIntoleranceCall.execute();
-                    allergyIntoleranceDataManager.save(sourceSystem, allergyIntoleranceResponse.body().getResources());
-                    break;
-                case CARE_PLAN:
-                    Call<NdJson<CarePlan>> carePlanCall = apiClient.getCarePlanResources(url, authorization);
-                    Response<NdJson<CarePlan>> carePlanResponse = carePlanCall.execute();
-                    carePlanDataManager.save(sourceSystem, carePlanResponse.body().getResources());
-                    break;
-                case OBSERVATION:
-                    Call<NdJson<Observation>> observationCall= apiClient.getObseravationResources(url, authorization);
-                    Response<NdJson<Observation>> observationResponse = observationCall.execute();
-                    observationDataManager.save(sourceSystem, observationResponse.body().getResources());
-                    break;
-                case PATIENT:
-                    Call<NdJson<Patient>> patientCall = apiClient.getPatientResources(url, authorization);
-                    Response<NdJson<Patient>> patientResponse = patientCall.execute();
-                    patientDataManager.save(sourceSystem, patientResponse.body().getResources());
-                    break;
+            try {
+                switch (FHIR_RESOURCE_MAP.get(exportOutput.getType())) {
+                    case CLAIM:
+                    case CONDITION:
+                    case DIAGNOSTIC_REPORT:
+                    case ENCOUNTER:
+                    case GOAL:
+                    case IMAGING_STUDY:
+                    case IMMUNIZATION:
+                    case MEDICATION_REQUEST:
+                    case BASIC:
+                    case ORGANIZATION:
+                    case PROCEDURE:
+                        break;
+                    case ALLERGY_INTOLERANCE:
+                        Call<NdJson<AllergyIntolerance>> allergyIntoleranceCall = apiClient.getAllergyIntoleranceResource(url, authorization);
+                        Response<NdJson<AllergyIntolerance>> allergyIntoleranceResponse = allergyIntoleranceCall.execute();
+                        allergyIntoleranceDataManager.save(sourceSystem, allergyIntoleranceResponse.body().getResources());
+                        break;
+                    case CARE_PLAN:
+                        Call<NdJson<CarePlan>> carePlanCall = apiClient.getCarePlanResources(url, authorization);
+                        Response<NdJson<CarePlan>> carePlanResponse = carePlanCall.execute();
+                        carePlanDataManager.save(sourceSystem, carePlanResponse.body().getResources());
+                        break;
+                    case OBSERVATION:
+                        Call<NdJson<Observation>> observationCall= apiClient.getObseravationResources(url, authorization);
+                        Response<NdJson<Observation>> observationResponse = observationCall.execute();
+                        observationDataManager.save(sourceSystem, observationResponse.body().getResources());
+                        break;
+                    case PATIENT:
+                        Call<NdJson<Patient>> patientCall = apiClient.getPatientResources(url, authorization);
+                        Response<NdJson<Patient>> patientResponse = patientCall.execute();
+                        patientDataManager.save(sourceSystem, patientResponse.body().getResources());
+                        break;
+                }
+            } catch (Exception e) {
+                System.err.println(e.getLocalizedMessage());
+                return;
             }
+
         }
     }
 

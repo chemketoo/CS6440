@@ -39,6 +39,9 @@ public class SourceSystemEntity {
     @Column(name = "fhirServerPath")
     private String fhirServerPath;
 
+    @Column(name = "blockgroup")
+    private String blockgroup;
+
     public Long getId() {
         return id;
     }
@@ -117,5 +120,13 @@ public class SourceSystemEntity {
 
     public void setFhirServerPath(String fhirServerPath) {
         this.fhirServerPath = fhirServerPath;
+    }
+
+    public String getBlockgroup() {
+        return blockgroup;
+    }
+
+    public void setBlockgroup(String blockgroup) {
+        this.blockgroup = blockgroup;
     }
 }
