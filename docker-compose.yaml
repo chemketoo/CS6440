@@ -1,13 +1,10 @@
 version: '3.0'
 services:
   mysql:
-    image: mysql:5.7
+    image: bulk-fhir-datastore:latest
+    build: 
+      context: bulk_fhir_datastore
     restart: always
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=yes
-      - MYSQL_DATABASE=bulk_fhir_datastore
-      - MYSQL_USER=doctor*who
-      - MYSQL_PASSWORD=cyber*men
   jwks-server:
     image: jwks-server:latest
     build: 
@@ -29,11 +26,6 @@ services:
     restart: always
     ports:
       - 5001:8080
-    environment:
-      - CORS_ORIGIN=https://cs6440-f18-prj20.apps.hdap.gatech.edu
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bulk_fhir_datastore?useSSL=false&&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=doctor*who
-      - SPRING_DATASOURCE_PASSWORD=cyber*men
     depends_on:
       - "mysql"
   bulk-fhir-curator:
@@ -41,10 +33,6 @@ services:
     build: 
       context: bulk_fhir_resource_curator
     restart: always
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bulk_fhir_datastore?useSSL=false&&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=doctor*who
-      - SPRING_DATASOURCE_PASSWORD=cyber*men
     depends_on:
       - "mysql"
       

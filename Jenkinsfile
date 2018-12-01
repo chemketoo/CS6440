@@ -29,6 +29,9 @@ pipeline{
                         def jwks_server = docker.build("jwks-server:1.0", "-f ./jwks_server/Dockerfile ./jwks_server")
                         jwks_server.push('latest')
 
+                        def bulk_fhir_datastore = docker.build("bulk-fhir-datastore:1.0", "-f ./bulk_fhir_datastore/Dockerfile ./bulk_fhir_datastore")
+                        bulk_fhir_datastore.push('latest')
+
                         def bulk_fhir_client = docker.build("bulk-fhir-client:1.0", "-f ./bulk_fhir_client/Dockerfile ./bulk_fhir_client")
                         bulk_fhir_client.push('latest')
 
@@ -46,6 +49,7 @@ pipeline{
             steps {
                 script{
                     rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/jwks-server:latest', ports: '', service: 'fbo/jwks-server', timeout: 50
+                    rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-datastore:latest', ports: '', service: 'fbo/bulk-fhir-datastore', timeout: 50
                     rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-client:latest', ports: '', service: 'fbo/bulk-fhir-client', timeout: 50
                     rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-server:latest', ports: '', service: 'fbo/bulk-fhir-server', timeout: 50
                     rancher confirm: true, credentialId: 'rancher-server', endpoint: 'https://rancher.hdap.gatech.edu/v2-beta', environmentId: '1a7', environments: '', image: 'build.hdap.gatech.edu/bulk-fhir-curator:latest', ports: '', service: 'fbo/bulk-fhir-curator', timeout: 50
