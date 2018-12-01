@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @ContextConfiguration(classes = {RepositoryTestConfiguration.class})
-public class SourceSystemsRepositoryIntegrationTestEntity {
+public class SourceSystemsRepositoryIntegrationTest {
 
     @Autowired
     private TestEntityManager entityManager;

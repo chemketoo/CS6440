@@ -14,7 +14,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -36,12 +35,12 @@ dependencies {
     implementation('com.squareup.retrofit2:converter-jackson:2.4.0')
 	implementation('io.jsonwebtoken:jjwt-api:0.10.5')
     implementation('io.jsonwebtoken:jjwt-jackson:0.10.5')
+    // FIXES: java.lang.ClassNotFoundException: javax.xml.bind.JAXBException
+//    implementation('javax.xml.bind:jaxb-api:2.3.1')
 	runtime('io.jsonwebtoken:jjwt-impl:0.10.5')
     testImplementation('org.springframework.boot:spring-boot-starter-test:2.0.6.RELEASE')
     testImplementation('org.springframework.boot:spring-boot-test-autoconfigure:2.0.6.RELEASE')
     testImplementation('com.h2database:h2:1.4.197')
-    // FIXES: java.lang.ClassNotFoundException: javax.xml.bind.JAXBException
-    testImplementation('javax.xml.bind:jaxb-api:2.3.1')
     // FIXES: update Hibernate dependency on Javassist to 3.23.1 for Java 11 compatibility
-    testImplementation('org.javassist:javassist:3.23.1-GA')
+//    testImplementation('org.javassist:javassist:3.23.1-GA')
 }
