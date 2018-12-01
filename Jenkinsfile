@@ -13,7 +13,7 @@ pipeline{
             //line between the ''' characters will be treated as separate lines of a shell script.
             steps {
                 sh '''cd ./bulk_fhir_server && ./mvnw package'''
-                sh '''cd ./bulk_fhir_curator && ./gradlew build'''
+                sh '''cd ./bulk_fhir_resource_curator && ./gradlew build'''
             }
         }
 
