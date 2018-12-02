@@ -1,10 +1,13 @@
 package edu.gatech.curator.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "observation")
+@IdClass(ObservationEntity.ObservationPrimaryKey.class)
 public class ObservationEntity {
 
     @Id
@@ -27,6 +30,7 @@ public class ObservationEntity {
     @Column(name = "quantity_unit")
     private String quantityUnit;
 
+    @Id
     @Column(name = "source_system_id")
     private long sourceSystemId;
 
@@ -95,5 +99,40 @@ public class ObservationEntity {
 
     public void setSourceSystemName(String sourceSystemName) {
         this.sourceSystemName = sourceSystemName;
+    }
+
+    public static class ObservationPrimaryKey implements Serializable {
+        private String id;
+        private long sourceSystemId;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public long getSourceSystemId() {
+            return sourceSystemId;
+        }
+
+        public void setSourceSystemId(long sourceSystemId) {
+            this.sourceSystemId = sourceSystemId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ObservationPrimaryKey that = (ObservationPrimaryKey) o;
+            return sourceSystemId == that.sourceSystemId &&
+                    Objects.equals(id, that.id);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, sourceSystemId);
+        }
     }
 }

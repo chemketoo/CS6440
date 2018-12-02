@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ObservationRepository extends CrudRepository<ObservationEntity, String> {
+public interface ObservationRepository extends CrudRepository<ObservationEntity, ObservationEntity.ObservationPrimaryKey> {
 }

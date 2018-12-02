@@ -1,11 +1,15 @@
 package edu.gatech.curator.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "patient")
+@IdClass(PatientEntity.PatientEntityPrimaryKey.class)
 public class PatientEntity {
+
     @Id
     @Column(name = "id")
     private String id;
@@ -26,6 +30,7 @@ public class PatientEntity {
     @Column(name = "longitude")
     private double longitude;
 
+    @Id
     @Column(name = "source_system_id")
     private long sourceSystemId;
 
@@ -94,5 +99,40 @@ public class PatientEntity {
 
     public void setSourceSystemName(String sourceSystemName) {
         this.sourceSystemName = sourceSystemName;
+    }
+
+    public class PatientEntityPrimaryKey implements Serializable {
+        private String id;
+        private long sourceSystemId;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public long getSourceSystemId() {
+            return sourceSystemId;
+        }
+
+        public void setSourceSystemId(long sourceSystemId) {
+            this.sourceSystemId = sourceSystemId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PatientEntityPrimaryKey that = (PatientEntityPrimaryKey) o;
+            return sourceSystemId == that.sourceSystemId &&
+                    Objects.equals(id, that.id);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, sourceSystemId);
+        }
     }
 }

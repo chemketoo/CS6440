@@ -8,6 +8,6 @@ CREATE TABLE patient(
     source_system_id BIGINT NOT NULL,
     source_system_name VARCHAR(255) NOT NULL,
 
-    PRIMARY KEY (id),
+    PRIMARY KEY (id, source_system_id),
     FOREIGN KEY (source_system_id) REFERENCES source_system(id)
 );
