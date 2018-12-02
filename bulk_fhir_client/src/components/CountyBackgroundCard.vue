@@ -42,9 +42,7 @@ export default {
         }
       ],
       totals: {
-        meta: {
-          patients_count: 0,
-        }
+          count: 0,
       }
     };
   },
@@ -63,12 +61,12 @@ export default {
           name: `${
             this.currentCounty.county
           } Patient Sample`,
-          value: this.totals.meta.patients_count
+          value: this.totals.count
         },
         {
           name: "Population Coverage of Sample (%)",
           value: (
-            (this.totals.meta.patients_count / this.currentCounty.population) *
+            (this.totals.count / this.currentCounty.population) *
             100
           ).toFixed(2)
         },
@@ -82,7 +80,7 @@ export default {
   watch: {
     sources(sources) {
       sources.forEach(source => {
-        this.totals.meta.patients_count += source.meta.patients_count;
+        this.totals.count += source.count;
       });
     }
   },

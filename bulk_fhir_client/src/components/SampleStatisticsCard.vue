@@ -2,7 +2,7 @@
     <card-wrapper>
         <template slot="title">
           <div>
-            <h3 class="headline mb-0">Data Background</h3>
+            <h3 class="headline mb-0">Sample Statistics</h3>
           </div>
         </template>
         <template slot="content">
@@ -14,8 +14,10 @@
             class="sources">
           <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
           <template class="source" slot="items" slot-scope="props">
-            <td class="text-xs-center">{{ props.item.sourceSystemName }}</td>
-            <td class="text-xs-center">{{ props.item.count }}</td>
+            <td class="text-xs-center">{{ props.item.metricName }}</td>
+            <td class="text-xs-center">{{ props.item.populationPrevalence }}</td>
+            <td class="text-xs-center">{{ props.item.stratification.males }}</td>
+            <td class="text-xs-center">{{ props.item.stratification.females }}</td>
           </template>
           </v-data-table>
         </template>
@@ -32,44 +34,44 @@ export default {
       loading: true,
       headers: [
         {
-          text: "Sources",
+          text: "Criteria",
+          value: "criteria",
           align: "center",
-          sortable: false,
-          value: "source"
+          sortable: false
         },
         {
-          text: "Patients",
-          value: "patient",
+          text: "Population Prevalence",
+          value: "population_prevalence",
+          align: "center",
+          sortable: false
+        },
+        {
+          text: "Stratified by Male",
+          value: "stratified_by_male",
+          align: "center",
+          sortable: false
+        },
+        {
+          text: "Stratified by Female",
+          value: "stratified_by_female",
           align: "center",
           sortable: false
         }
-      ],
-      totals: {
-        sourceSystemName: "Total",
-        count: 0
-      }
+      ]
     };
   },
   mounted() {
-    this.fetchSources().finally(() => {
+    this.fetchSampleStatistics().finally(() => {
       this.loading = false;
     });
   },
   methods: {
-    ...mapActions(["fetchSources"])
+    ...mapActions(["fetchSampleStatistics"])
   },
   computed: {
-    ...mapState(["sources"]),
-    presented() {
-      return [...this.sources, this.totals]
-    }
+    ...mapState(["sampleStatistics"]),
   },
   watch: {
-    sources(sources) {
-      sources.forEach(source => {
-        this.totals.count += source.count;
-      });
-    }
   },
   components: {
     "card-wrapper": CardWrapper

@@ -1,4 +1,4 @@
-package edu.gatech.curator.entity;
+package com.fbo.bulk_fhir_server.entity;
 
 import javax.persistence.*;
 import java.util.Date;

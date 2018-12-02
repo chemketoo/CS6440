@@ -9,7 +9,8 @@ export default new Vuex.Store({
       county: 'Cameron County',
       population: 423725
     },
-    sources: []
+    sources: [],
+    metrics: []
   },
   getters: {
     selectedCountyDetails: state => {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
   mutations: {
     setSources (state, sources) {
       state.sources = sources
+    },
+    setMetrics (state, metrics) {
+      state.metrics = metrics
     }
   },
   actions: {
@@ -27,6 +31,13 @@ export default new Vuex.Store({
         .then((response) => response.json())
         .then((json) => {
           commit('setSources', json.data)
+        })
+    },
+    fetchSampleStatistics: ({ commit }) => {
+      return fetch(`${process.env.VUE_APP_BULK_FHIR_SERVER_HOST}/api/metrics  `)
+        .then((response) => response.json())
+        .then((json) => {
+          commit('setMetrics', json.data)
         })
     }
   }

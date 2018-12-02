@@ -1,4 +1,4 @@
-package edu.gatech.curator.entity;
+package com.fbo.bulk_fhir_server.entity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -32,9 +32,9 @@ public class ObesityMetricEntity {
     @Column(name = "obese")
     private int obese;
 
-    @Column(name = "lastUpdated")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastUpdated;
+    @Column(name = "last_updated")
+    @Temporal(TemporalType.DATE)
+    private Date last_updated;
 
     public int getId() {
         return id;
@@ -100,11 +100,11 @@ public class ObesityMetricEntity {
         this.obese = obese;
     }
 
-    public Date getLastUpdated() {
-        return lastUpdated;
+    public Date getLast_updated() {
+        return last_updated;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setLast_updated(Date last_updated) {
+        this.last_updated = last_updated;
     }
 }
