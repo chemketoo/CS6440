@@ -1,6 +1,6 @@
 version: '3.0'
 services:
-  mysql:
+  bulk-fhir-datastore:
     image: bulk-fhir-datastore:latest
     build: 
       context: bulk_fhir_datastore
@@ -27,12 +27,12 @@ services:
     ports:
       - 5001:8080
     depends_on:
-      - "mysql"
+      - "bulk-fhir-datastore"
   bulk-fhir-curator:
     image: bulk-fhir-curator:latest
     build: 
       context: bulk_fhir_resource_curator
     restart: always
     depends_on:
-      - "mysql"
+      - "bulk-fhir-datastore"
       
