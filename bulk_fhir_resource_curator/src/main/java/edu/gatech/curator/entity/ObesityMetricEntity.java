@@ -32,7 +32,7 @@ public class ObesityMetricEntity {
     @Column(name = "obese")
     private int obese;
 
-    @Column(name = "lastUpdated")
+    @Column(name = "last_updated")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdated;
 

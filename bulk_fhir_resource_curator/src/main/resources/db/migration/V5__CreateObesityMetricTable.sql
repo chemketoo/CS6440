@@ -9,5 +9,5 @@ create table obesity_metrics
   healthy      int                                    not null,
   overweight   int                                    not null,
   obese        int                                    not null,
-  lastUpdated datetime default '2000-01-01 00:00:00'  not null
+  last_updated datetime default '2000-01-01 00:00:00'  not null
 );
