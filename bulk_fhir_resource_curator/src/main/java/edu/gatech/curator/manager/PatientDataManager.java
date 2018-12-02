@@ -45,7 +45,7 @@ public class PatientDataManager {
                 patientRepository.save(patient);
             });
         } catch (Exception e) {
-
+            System.err.println(e.getLocalizedMessage());
         }
     }
 }

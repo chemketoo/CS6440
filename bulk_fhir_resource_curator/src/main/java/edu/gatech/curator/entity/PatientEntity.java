@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "patient")
-@IdClass(PatientEntity.PatientEntityPrimaryKey.class)
+@IdClass(PatientEntity.PatientPrimaryKey.class)
 public class PatientEntity {
 
     @Id
@@ -101,7 +101,7 @@ public class PatientEntity {
         this.sourceSystemName = sourceSystemName;
     }
 
-    public class PatientEntityPrimaryKey implements Serializable {
+    public static class PatientPrimaryKey implements Serializable {
         private String id;
         private long sourceSystemId;
 
@@ -125,7 +125,7 @@ public class PatientEntity {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            PatientEntityPrimaryKey that = (PatientEntityPrimaryKey) o;
+            PatientPrimaryKey that = (PatientPrimaryKey) o;
             return sourceSystemId == that.sourceSystemId &&
                     Objects.equals(id, that.id);
         }
