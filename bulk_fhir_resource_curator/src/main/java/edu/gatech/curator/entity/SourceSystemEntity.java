@@ -36,7 +36,7 @@ public class SourceSystemEntity {
     @Column(name = "tokenPath")
     private String tokenPath;
 
-    @Column(name = "fhirServerPath")
+        @Column(name = "fhirServerPath")
     private String fhirServerPath;
 
     public Long getId() {

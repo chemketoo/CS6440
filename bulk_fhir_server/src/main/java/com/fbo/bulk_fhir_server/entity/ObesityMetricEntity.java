@@ -14,12 +14,6 @@ public class ObesityMetricEntity {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "year")
-    private int year;
-
-    @Column(name = "age")
-    private String age;
-
     @Column(name = "underweight")
     private int underweight;
 
@@ -50,22 +44,6 @@ public class ObesityMetricEntity {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
     }
 
     public int getUnderweight() {

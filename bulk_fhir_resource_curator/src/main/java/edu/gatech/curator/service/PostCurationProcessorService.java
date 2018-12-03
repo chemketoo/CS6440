@@ -1,5 +1,6 @@
 package edu.gatech.curator.service;
 
+import edu.gatech.curator.manager.ObesityGenderYearMetricsDataManager;
 import edu.gatech.curator.manager.ObesityMetricsDataManager;
 import edu.gatech.curator.provider.QueryProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.List;
-
-//import edu.gatech.curator.persistence.SqlRunner;
 
 @Service
 public class PostCurationProcessorService {
@@ -28,21 +27,25 @@ public class PostCurationProcessorService {
 	@Autowired
 	private ObesityMetricsDataManager obesityMetricsDataManager;
 
+    @Autowired
+    private ObesityGenderYearMetricsDataManager obesityGenderYearMetricsDataManager;
+
 
     public void start() {
-        try {
+		try {
             SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
                     .withProcedureName("UpdatePatientBlockgroup");
             jdbcCall.execute();
-        } catch (Exception e) {
-            System.err.println(e.getLocalizedMessage());
-        }
 
-		try {
 			String query = queryProvider.getObesityMetricsQuery();
 			List<Object[]> results = entityManager.createNativeQuery(query).getResultList();
 			results.forEach((result) -> obesityMetricsDataManager.save(result));
-		} catch (IOException e) {
+
+            query = queryProvider.getObesityGenderYearMetricsQuery();
+            results = entityManager.createNativeQuery(query).getResultList();
+            results.forEach((result) -> obesityGenderYearMetricsDataManager.save(result));
+
+		} catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
 		}
 	}

@@ -20,4 +20,10 @@ public class QueryProvider {
 		String query = IOUtils.toString(fileResource.getInputStream(), Charset.forName("UTF-8"));
 		return query;
 	}
+
+	public String getObesityGenderYearMetricsQuery() throws IOException {
+		Resource fileResource = resourceLoader.getResource("classpath:/queries/obesity_gender_year.sql");
+		String query = IOUtils.toString(fileResource.getInputStream(), Charset.forName("UTF-8"));
+		return query;
+	}
 }

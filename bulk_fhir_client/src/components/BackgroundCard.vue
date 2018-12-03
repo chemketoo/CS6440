@@ -23,58 +23,58 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
-import CardWrapper from "@/components/CardWrapper.vue";
+import { mapActions, mapState } from 'vuex'
+import CardWrapper from '@/components/CardWrapper.vue'
 
 export default {
-  data() {
+  data () {
     return {
       loading: true,
       headers: [
         {
-          text: "Sources",
-          align: "center",
+          text: 'Sources',
+          align: 'center',
           sortable: false,
-          value: "source"
+          value: 'source'
         },
         {
-          text: "Patients",
-          value: "patient",
-          align: "center",
+          text: 'Patients',
+          value: 'patient',
+          align: 'center',
           sortable: false
         }
       ],
       totals: {
-        sourceSystemName: "Total",
+        sourceSystemName: 'Total',
         count: 0
       }
-    };
+    }
   },
-  mounted() {
+  mounted () {
     this.fetchSources().finally(() => {
-      this.loading = false;
-    });
+      this.loading = false
+    })
   },
   methods: {
-    ...mapActions(["fetchSources"])
+    ...mapActions(['fetchSources'])
   },
   computed: {
-    ...mapState(["sources"]),
-    presented() {
+    ...mapState(['sources']),
+    presented () {
       return [...this.sources, this.totals]
     }
   },
   watch: {
-    sources(sources) {
+    sources (sources) {
       sources.forEach(source => {
-        this.totals.count += source.count;
-      });
+        this.totals.count += source.count
+      })
     }
   },
   components: {
-    "card-wrapper": CardWrapper
+    'card-wrapper': CardWrapper
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

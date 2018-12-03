@@ -1,11 +1,11 @@
-package edu.gatech.curator.entity;
+package com.fbo.bulk_fhir_server.entity;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "obesity_metrics")
-public class ObesityMetricEntity {
+@Table(name = "obesity_metrics_gender_year")
+public class ObesityGenderYearMetricEntity {
 
     @Id
     @Column(name = "id")
@@ -13,6 +13,12 @@ public class ObesityMetricEntity {
 
     @Column(name = "gender")
     private String gender;
+
+    @Column(name = "year")
+    private int year;
+
+    @Column(name = "age")
+    private String age;
 
     @Column(name = "underweight")
     private int underweight;
@@ -44,6 +50,22 @@ public class ObesityMetricEntity {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 
     public int getUnderweight() {
