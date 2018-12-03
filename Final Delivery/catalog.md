@@ -18,15 +18,12 @@
 | Vijay Pothona | vpothana3 | vpothana3@gatech.edu |
 
 ## CONTENTS:
-MANUAL
-(Van is still working on this)
-FINAL GANTT CHART
-LINKED NEEDED
-DEPLOYED APPLICATION
-LINK NEEDED
-PROJECT OVERVIEW VIDEO
-LINK NEEDED!
-CODE STRUCTURE
+
+- MANUAL - (Van is still working on this)
+- FINAL GANTT CHART
+[Final Gantt](https://github.gatech.edu/gt-cs6440-hit-fall2018/Utilizing-FHIR-Bulk-Data-API-for-Real-Time-Public-Health-Needs-Assessments/blob/master/Final%20Delivery/Final%20Gantt%20Chart%20-%20FHIR%20Buffer%20Overflow.pdf)
+- DEPLOYED APPLICATION - LINK NEEDED
+- PROJECT OVERVIEW VIDEO - LINK NEEDED!
 
 ## CODE STRUCTURE
 Docker-Compose.yml
@@ -72,17 +69,13 @@ services:
 ```
 
 ## PROJECT SPECIFICATIONS
-** FHIR SPECIFICATION:
-** FRONT-END FRAMEWORK :
-** BACK-END FRAMEWORK:
-** DATABASE : We need to talk about our database here
-Maybe add some generated PNG screenshot here or a link(where we put the screenshot in our Github)
-Bootstrap 4:
-Material Dashboard:
-PAGE TEMPLATES:
-DATA VISUALIZATION:
+- FHIR SPECIFICATION:  Dstu2 
+- FRONT-END FRAMEWORK: HTML and CSS
+- BACK-END FRAMEWORK: Java Spring 
+- DATABASE: MySQL
+
 ### ORIGINAL PROJECT DESCRIPTION
-Full-text link: [http://cs6440.gatech.edu/wp-content/uploads/sites/634/2018/09/Spring2018CatalogTeam34.pdf)
+[Full-text link:] (http://cs6440.gatech.edu/wp-content/uploads/sites/634/2018/09/Spring2018CatalogTeam34.pdf)
 
 ### UTILIZING FHIR BULK DATA API FOR REAL-TIME PUBLIC HEALTH NEEDS ASSESSMENTS
 The scope of public health includes Assessment, Policy Development, and Assurance (Institute of Medicine, 1988). It is critical for public health agencies to understand the scope of the problem they are addressing to appropriately target the problem and measure the impact of interventions. Population assessment data can be used to identify problem scope, advocate for policy changes, justify future projects, and obtain external funding (Eschenfelder, 2010).
