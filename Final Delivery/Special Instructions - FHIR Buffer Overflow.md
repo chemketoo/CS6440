@@ -1,4 +1,4 @@
-# Application Manual
+# Special Instructions
 ## CS6440 Fall 2018 – FHIR Buffer Overflow
 ### Utilizing FHIR Bulk Data API for Real-Time Public Health Needs Assessments
 
@@ -23,10 +23,17 @@
 
 #### How to run the Application
 ##### Step 1: Clone the repository 
-##### Step 2: cd server
-##### Step 3: ./mvnw package 
-##### Step 4: cd curator 
-##### Step 5: ./gradlew build
-##### Step 6: cd project root
-##### Step 7: docker-compose up -d --build
+`git clone https://github.gatech.edu/gt-cs6440-hit-fall2018/Utilizing-FHIR-Bulk-Data-API-for-Real-Time-Public-Health-Needs-Assessments.git`
+##### Step 2: Change into the server directory
+`cd bulk_fhir_server`
+##### Step 3: Run mvnw
+`./mvnw package`
+##### Step 4: Change into the curator directory
+`cd ../bulk_fhir_resource_curator/`
+##### Step 5: Build gradle
+`./gradlew build`
+##### Step 6: Go back to root directory
+`cd ../`
+##### Step 7: Start/build docker
+`docker-compose up -d --build`
  
