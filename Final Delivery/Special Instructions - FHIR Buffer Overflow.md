@@ -22,9 +22,10 @@
 | Vijay Pothona | vpothana3 | vpothana3@gatech.edu |
 
 #### Technical Requirements
-1. Install docker-compose
-2. Install maven
-3. Install gradle
+1. Install docker
+2. Install docker-compose
+3. Install maven
+4. Install gradle
 
 #### How to run the Application
 ##### Step 1: Clone the repository 
