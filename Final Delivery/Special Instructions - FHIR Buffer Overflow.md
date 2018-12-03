@@ -21,6 +21,11 @@
 | Van Mang | vmang3 | vmang3@gatech.edu |
 | Vijay Pothona | vpothana3 | vpothana3@gatech.edu |
 
+#### Technical Requirements
+1. Install docker-compose
+2. Install maven
+3. Install gradle
+
 #### How to run the Application
 ##### Step 1: Clone the repository 
 `git clone https://github.gatech.edu/gt-cs6440-hit-fall2018/Utilizing-FHIR-Bulk-Data-API-for-Real-Time-Public-Health-Needs-Assessments.git`
@@ -33,7 +38,7 @@
 ##### Step 5: Build gradle
 `./gradlew build`
 ##### Step 6: Go back to root directory
-`cd ../`
+`cd ..`
 ##### Step 7: Start/build docker
 `docker-compose up -d --build`
  
