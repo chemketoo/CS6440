@@ -69,15 +69,16 @@ services:
 ```
 
 ## PROJECT SPECIFICATIONS
-** FHIR SPECIFICATION:
-** FRONT-END FRAMEWORK :
-** BACK-END FRAMEWORK:
-** DATABASE : We need to talk about our database here
+- FHIR SPECIFICATION:
+- FRONT-END FRAMEWORK :
+- BACK-END FRAMEWORK:
+- DATABASE : We need to talk about our database here
 Maybe add some generated PNG screenshot here or a link(where we put the screenshot in our Github)
-Bootstrap 4:
-Material Dashboard:
-PAGE TEMPLATES:
-DATA VISUALIZATION:
+- Bootstrap 4:
+- Material Dashboard:
+- PAGE TEMPLATES:
+- DATA VISUALIZATION:
+
 ### ORIGINAL PROJECT DESCRIPTION
 Full-text link: [http://cs6440.gatech.edu/wp-content/uploads/sites/634/2018/09/Spring2018CatalogTeam34.pdf)
 
