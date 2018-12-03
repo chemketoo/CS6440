@@ -26,8 +26,7 @@
 - PROJECT OVERVIEW VIDEO - LINK NEEDED!
 
 ## CODE STRUCTURE
-Docker-Compose.yml
-Need to describe what below code is
+Docker-Compose.yml - Cordinate activation of the docker lifecycle 
 ```bash
 version: '3.0'
 services:
