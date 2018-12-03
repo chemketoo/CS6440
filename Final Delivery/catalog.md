@@ -69,7 +69,7 @@ services:
 ```
 
 ## PROJECT SPECIFICATIONS
-- FHIR SPECIFICATION: Docker, Docker-Compose, java jdk 1.8
+- FHIR SPECIFICATION:  Dstu2 
 - FRONT-END FRAMEWORK: HTML and CSS
 - BACK-END FRAMEWORK: Java Spring 
 - DATABASE: MySQL
