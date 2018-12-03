@@ -8,7 +8,7 @@
 #### External Mentors: Johnny Bender
 #### [Github Repository Link:] https://github.gatech.edu/gt-cs6440-hit-fall2018/Utilizing-FHIR-Bulk-Data-API-for-Real-Time-Public-Health-Needs-Assessments
 
-![Image](./imgs/github-repo.png)
+![Image](./img/github-repo.png)
 
 
 
@@ -24,5 +24,10 @@
 #### Application Purpose:
 
 
+### Steps to follow
 
-C
+#### Step 1 
+
+* This view is the main view and initial view when the application is first launched.  Here, the user can quickly see basic health information and statistics associated with his or her nutrition and diet intake. Upon scrolling down, the user will see the summary of the various cards associated with the user's nutritional information.
+Some of the cards seen is this main view are the user summary card, patient vitals/labs card, personal diet card, food alergy card, social history card, medical allergy card, and food environment card.   
+
