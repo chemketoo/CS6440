@@ -20,7 +20,8 @@
 ## CONTENTS:
 
 - MANUAL - (Van is still working on this)
-- FINAL GANTT CHART - https://github.gatech.edu/gt-cs6440-hit-fall2018/Utilizing-FHIR-Bulk-Data-API-for-Real-Time-Public-Health-Needs-Assessments/blob/master/Final%20Delivery/Final%20Gantt%20Chart%20-%20FHIR%20Buffer%20Overflow.pdf
+- FINAL GANTT CHART
+[Final Gantt](https://github.gatech.edu/gt-cs6440-hit-fall2018/Utilizing-FHIR-Bulk-Data-API-for-Real-Time-Public-Health-Needs-Assessments/blob/master/Final%20Delivery/Final%20Gantt%20Chart%20-%20FHIR%20Buffer%20Overflow.pdf)
 - DEPLOYED APPLICATION - LINK NEEDED
 - PROJECT OVERVIEW VIDEO - LINK NEEDED!
 
