@@ -1,4 +1,4 @@
-# Catalog
+# Application Manual
 ## CS6440 Fall 2018 – FHIR Buffer Overflow
 ### Utilizing FHIR Bulk Data API for Real-Time Public Health Needs Assessments
 
