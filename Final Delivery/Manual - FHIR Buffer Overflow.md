@@ -8,6 +8,10 @@
 #### External Mentors: Johnny Bender
 #### [Github Repository Link:] https://github.gatech.edu/gt-cs6440-hit-fall2018/Utilizing-FHIR-Bulk-Data-API-for-Real-Time-Public-Health-Needs-Assessments
 
+![Image](./imgs/github-repo.png)
+
+
+
 |Team Members | GT Username | Email |
 | ------------| ----------- | ----- |
 | Varun Behl  | vbehl3      | vbehl@gatech.edu|
