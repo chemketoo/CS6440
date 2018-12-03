@@ -24,14 +24,13 @@
 #### Application Purpose:
 
 
-##### Steps to follow
-
-##### Step 1 - Clone the repository 
-##### Step 2 - cd server
-##### Step 3 - ./mvnw package 
-##### Step 4 - cd curator 
-##### Step 5 - ./gradlew build
-##### Step 6 - cd project root
-##### Step 7 - docker-compose up -d --build
+#### Steps to follow
+##### Step 1: Clone the repository 
+##### Step 2: cd server
+##### Step 3: ./mvnw package 
+##### Step 4: cd curator 
+##### Step 5: ./gradlew build
+##### Step 6: cd project root
+##### Step 7: docker-compose up -d --build
  
 
