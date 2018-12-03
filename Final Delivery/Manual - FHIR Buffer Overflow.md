@@ -25,6 +25,9 @@
 
 
 
+![Image](./imgs/Data Background and Sample Metrics UI.png)
+
+![Image](./imgs/Sample Statistics UI.png)
 
  
 
