@@ -75,7 +75,6 @@ services:
 - DATABASE : We need to talk about our database here
 Maybe add some generated PNG screenshot here or a link(where we put the screenshot in our Github)
 - Bootstrap 4:
-- Material Dashboard:
 - PAGE TEMPLATES:
 - DATA VISUALIZATION:
 
