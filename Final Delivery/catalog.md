@@ -79,7 +79,7 @@ Maybe add some generated PNG screenshot here or a link(where we put the screensh
 - DATA VISUALIZATION:
 
 ### ORIGINAL PROJECT DESCRIPTION
-Full-text link: [http://cs6440.gatech.edu/wp-content/uploads/sites/634/2018/09/Spring2018CatalogTeam34.pdf)
+[Full-text link:] (http://cs6440.gatech.edu/wp-content/uploads/sites/634/2018/09/Spring2018CatalogTeam34.pdf)
 
 ### UTILIZING FHIR BULK DATA API FOR REAL-TIME PUBLIC HEALTH NEEDS ASSESSMENTS
 The scope of public health includes Assessment, Policy Development, and Assurance (Institute of Medicine, 1988). It is critical for public health agencies to understand the scope of the problem they are addressing to appropriately target the problem and measure the impact of interventions. Population assessment data can be used to identify problem scope, advocate for policy changes, justify future projects, and obtain external funding (Eschenfelder, 2010).
