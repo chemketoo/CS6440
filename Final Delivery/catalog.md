@@ -72,8 +72,7 @@ services:
 - FHIR SPECIFICATION: Docker, Docker-Compose, java jdk 1.8
 - FRONT-END FRAMEWORK: HTML and CSS
 - BACK-END FRAMEWORK: Java Spring 
-- DATABASE: 
-- DATA VISUALIZATION:
+- DATABASE: MySQL
 
 ### ORIGINAL PROJECT DESCRIPTION
 [Full-text link:] (http://cs6440.gatech.edu/wp-content/uploads/sites/634/2018/09/Spring2018CatalogTeam34.pdf)
