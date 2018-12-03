@@ -25,7 +25,7 @@
 
 
 
-![Image](./imgs/Sample Statistics UI.png)
+![Image](./imgs/SampleStatisticsUI.png)
 
 ![Image](./imgs/Sample Statistics UI.png)
 
