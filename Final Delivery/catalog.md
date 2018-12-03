@@ -69,13 +69,10 @@ services:
 ```
 
 ## PROJECT SPECIFICATIONS
-- FHIR SPECIFICATION:
-- FRONT-END FRAMEWORK :
-- BACK-END FRAMEWORK:
-- DATABASE : We need to talk about our database here
-Maybe add some generated PNG screenshot here or a link(where we put the screenshot in our Github)
-- Bootstrap 4:
-- PAGE TEMPLATES:
+- FHIR SPECIFICATION: Docker, Docker-Compose, java jdk 1.8
+- FRONT-END FRAMEWORK: HTML and CSS
+- BACK-END FRAMEWORK: Java Spring 
+- DATABASE: 
 - DATA VISUALIZATION:
 
 ### ORIGINAL PROJECT DESCRIPTION
