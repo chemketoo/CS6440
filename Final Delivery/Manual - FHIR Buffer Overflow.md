@@ -24,7 +24,7 @@
 #### Application Purpose:
 
 
-#### Steps to follow
+### How to run the code? 
 ##### Step 1: Clone the repository 
 ##### Step 2: cd server
 ##### Step 3: ./mvnw package 
